@@ -67,8 +67,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <user.username>mdmsuperuser</user.username>
-                <user.password>mdmsuperuser</user.password>
+                <user.username>mdmuser</user.username>
+                <user.password>mdmuser</user.password>
                 <ewm.url>http://devwas.uscold.com:9086/ewm/login.html</ewm.url>
             </properties>
         </profile>

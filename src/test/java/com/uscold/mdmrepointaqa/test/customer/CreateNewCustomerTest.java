@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -18,7 +19,10 @@ import java.util.List;
 
 public class CreateNewCustomerTest extends AbstractTestClass {
 
-    final static String corporateName = "RE_POINT_TEST";
+    final static String WHSE = "800 - BETHLEHEM";
+    final static String WHSETEST = "8080808800 - BETHLEHEM";
+    int WHSE_int =Integer.parseInt(WHSE.substring(1,3));
+    final static String corporateName = "RE_POINT_TEST999";
     final static String addressLineOne = "1 INFINITE LOOP";
     final static String ciTy = "CUPERTINO";
     final static String staTe = "California";
@@ -29,7 +33,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
     private String receivedFromcustomerNumber = "";
 
 
-    @Test
+    @Test(priority = 1)
     public void createCustomerTest() throws InterruptedException {
         PageHelper.chooseModule(driver, "Customer Management");
 //        PageHelper.chooseWarehouse(driver, 800);
@@ -69,7 +73,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
 
         //Scrolling with Javascript was needed because the browser hides the page.
-        JavascriptExecutor jsx = (JavascriptExecutor)driver;
+        JavascriptExecutor jsx = (JavascriptExecutor) driver;
         jsx.executeScript("window.scrollBy(0,450)", "");
 
         click(driver.findElement(By.id("additionalDtlSubmit")));
@@ -78,7 +82,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains("created at the Enterprise"))
             throw new RuntimeException("Failed to create customer");
 
-        click(driver.findElement(By.id("cancelWhse")));
+//        click(driver.findElement(By.id("cancelWhse")));
         //The tare is failing this logic was commented out for now.
 //        click(driver.findElement(By.id("addDtlCancelCustomer")));
 //
@@ -89,9 +93,31 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         //Alert alert = driver.switchTo().alert();
         //alert().dismiss();
 
+
+
     }
 
-    @Test(dependsOnMethods = "createCustomerTest",priority = 1)
+
+    @Test(dependsOnMethods = "createCustomerTest",priority = 2 )
+    public void pushToWarehouseLevel () {
+        Select mySelect = new Select(driver.findElement(By.xpath(".//*[@id='hidebox']")));
+        mySelect.selectByVisibleText(WHSE);
+        click(driver.findElement(By.xpath("//input[@id='moveToRight']")));
+        click(driver.findElement(By.xpath("//button[@id='done']")));
+
+        WebElement errMsg = driver.findElement(By.id("openErrorDialog"));
+        if (errMsg.isDisplayed()) {
+            throw new RuntimeException("Failed to push to the whse level");
+        }else {
+           WebElement wReturned = driver.findElement(By.xpath(".//*[@id='hidebox']"));
+            if (!wReturned.isEnabled()) {
+                throw new RuntimeException("Failed to push to the whse level");
+
+            click(driver.findElement(By.id("cancelWhse")));
+        }
+    }
+
+    @Test(dependsOnMethods = "createCustomerTest",priority = 3)
     public void viewCreatedCustomer() {
 //        PageHelper.waitForJSandJQueryToLoad(driver);
         driver.findElement(By.id("txt_searchNumber")).clear();
@@ -126,183 +152,183 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         org.testng.Assert.assertTrue(corporateName.equals(corporateName));
 
     }
-
-    @Test( priority = 2)
-    public void createBillToCustomerTest() throws InterruptedException {
-        PageHelper.chooseModule(driver, "Customer Management");
-        //        PageHelper.chooseWarehouse(driver, 800);
-
-        //Search BTs before test
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Bill To"));
-        click(driver.findElement(By.id("searchOne")));
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
-
-        click(driver.findElement(By.id("createNewBtn")));
-
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Bill To"));
-
-//        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
-//        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys(customerNumber + 1);
-
-        driver.findElement(By.id("corporateName")).sendKeys(corporateName);
-        driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
-        driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
-        driver.findElement(By.id("city")).sendKeys(ciTy);
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
-
-        driver.findElement(By.id("zip")).clear();
-        driver.findElement(By.id("zip")).sendKeys(zipCode);
-
-
-        billTocustomerNumber = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
-
-        click(driver.findElement(By.id("basicDtlSubmit")));
-        if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
-            //if page wasn`t changed then it probably means we should verify address
-            PageHelper.waitForJSandJQueryToLoad(driver);
-            click(driver.findElement(By.id("addverify_enter")));
-            driver.findElement(By.id("uspsCommentsDialog")).clear();
-            driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
-            click(driver.findElement(By.id("saveBtn")));
-            click(driver.findElement(By.id("basicDtlSubmit")));
-        }
-
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
-
-
-        //Scrolling with Javascript was needed because the browser hides the page.
-        JavascriptExecutor jsx = (JavascriptExecutor)driver;
-        jsx.executeScript("window.scrollBy(0,450)", "");
-
-
-        click(driver.findElement(By.id("additionalDtlSubmit")));
-
-        WebElement statusMsg = driver.findElement(By.xpath("//span[@id='message']"));
-        if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains("created at the Enterprise"))
-            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
-
-        click(driver.findElement(By.id("cancelWhse")));
-        //     click(driver.findElement(By.id("addDtlCancelCustomer")));
-
-    }
-
-    @Test(dependsOnMethods = "createBillToCustomerTest", priority = 3)
-    public void viewCreatedBillToCustomer() {
-//        PageHelper.waitForJSandJQueryToLoad(driver);
-        driver.findElement(By.id("txt_searchNumber")).clear();
-        driver.findElement(By.id("txt_searchNumber")).sendKeys(billTocustomerNumber);
-        click(driver.findElement(By.id("searchOne")));
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
-
-        WebElement table = driver.findElement(By.id("list"));
-        List<WebElement> rows = table.findElements(By.xpath(".//tr"));
-        WebElement row = rows.get(1);
-        click(row.findElement(By.xpath("td[@title='" + billTocustomerNumber + "']/a")));
-
-        WebElement columnContainer = driver.findElement(By.xpath("//div[@class='leftColumnContainer']"));
-
-        WebElement span = columnContainer.findElement(By.xpath("div[1]/span"));
-        String accountType = span.getText();
-
-        span = columnContainer.findElement(By.xpath("div[2]/span"));
-        String customerNumber = span.getText();
-
-        span = columnContainer.findElement(By.xpath("div[3]/span"));
-        String corporateName = span.getText();
-
-        org.testng.Assert.assertTrue(customerNumber.equals(customerNumber));
-        org.testng.Assert.assertTrue(accountType.equals("Customer"));
-        org.testng.Assert.assertTrue(corporateName.equals(corporateName));
-
-    }
-
-    @Test( priority = 4)
-    public void createReceivedFromCustomerTest() throws InterruptedException {
-        PageHelper.chooseModule(driver, "Customer Management");
-        //        PageHelper.chooseWarehouse(driver, 800);
-
-        //Search BTs before test
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Received From"));
-        click(driver.findElement(By.id("searchOne")));
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
-
-        click(driver.findElement(By.id("createNewBtn")));
-
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Received From"));
-
-//        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
-//        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys(customerNumber + 1);
-
-        driver.findElement(By.id("corporateName")).sendKeys(corporateName);
-        driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
-        driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
-        driver.findElement(By.id("city")).sendKeys(ciTy);
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
-
-        driver.findElement(By.id("zip")).clear();
-        driver.findElement(By.id("zip")).sendKeys(zipCode);
-
-
-        receivedFromcustomerNumber = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
-
-        click(driver.findElement(By.id("basicDtlSubmit")));
-        if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
-            //if page wasn`t changed then it probably means we should verify address
-            PageHelper.waitForJSandJQueryToLoad(driver);
-            click(driver.findElement(By.id("addverify_enter")));
-            driver.findElement(By.id("uspsCommentsDialog")).clear();
-            driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
-            click(driver.findElement(By.id("saveBtn")));
-            click(driver.findElement(By.id("basicDtlSubmit")));
-        }
-
+//
+//    @Test( priority = 3)
+//    public void createBillToCustomerTest() throws InterruptedException {
+//        PageHelper.chooseModule(driver, "Customer Management");
+//        //        PageHelper.chooseWarehouse(driver, 800);
+//
+//        //Search BTs before test
+//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Bill To"));
+//        click(driver.findElement(By.id("searchOne")));
+//        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
+//
+//        click(driver.findElement(By.id("createNewBtn")));
+//
+//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Bill To"));
+//
+////        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
+////        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys(customerNumber + 1);
+//
+//        driver.findElement(By.id("corporateName")).sendKeys(corporateName);
+//        driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
+//        driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
+//        driver.findElement(By.id("city")).sendKeys(ciTy);
+//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
+//
+//        driver.findElement(By.id("zip")).clear();
+//        driver.findElement(By.id("zip")).sendKeys(zipCode);
+//
+//
+//        billTocustomerNumber = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
+//
+//        click(driver.findElement(By.id("basicDtlSubmit")));
+//        if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
+//            //if page wasn`t changed then it probably means we should verify address
+//            PageHelper.waitForJSandJQueryToLoad(driver);
+//            click(driver.findElement(By.id("addverify_enter")));
+//            driver.findElement(By.id("uspsCommentsDialog")).clear();
+//            driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
+//            click(driver.findElement(By.id("saveBtn")));
+//            click(driver.findElement(By.id("basicDtlSubmit")));
+//        }
+//
 //        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
-
-
+//
+//
 //        //Scrolling with Javascript was needed because the browser hides the page.
 //        JavascriptExecutor jsx = (JavascriptExecutor)driver;
 //        jsx.executeScript("window.scrollBy(0,450)", "");
 //
 //
 //        click(driver.findElement(By.id("additionalDtlSubmit")));
-
-        WebElement statusMsg = driver.findElement(By.xpath("//span[@id='message']"));
-        if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains("created at the Enterprise"))
-            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
-
+//
+//        WebElement statusMsg = driver.findElement(By.xpath("//span[@id='message']"));
+//        if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains("created at the Enterprise"))
+//            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+//
 //        click(driver.findElement(By.id("cancelWhse")));
-        //     click(driver.findElement(By.id("addDtlCancelCustomer")));
-
-    }
-
-    @Test(dependsOnMethods = "createReceivedFromCustomerTest", priority = 5)
-    public void viewCreatedReceivedFromCustomer() {
-//        PageHelper.waitForJSandJQueryToLoad(driver);
-        driver.findElement(By.id("txt_searchNumber")).clear();
-        driver.findElement(By.id("txt_searchNumber")).sendKeys(receivedFromcustomerNumber);
-        click(driver.findElement(By.id("searchOne")));
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
-
-        WebElement table = driver.findElement(By.id("list"));
-        List<WebElement> rows = table.findElements(By.xpath(".//tr"));
-        WebElement row = rows.get(1);
-        click(row.findElement(By.xpath("td[@title='" + receivedFromcustomerNumber + "']/a")));
-
-        WebElement columnContainer = driver.findElement(By.xpath("//div[@class='leftColumnContainer']"));
-
-        WebElement span = columnContainer.findElement(By.xpath("div[1]/span"));
-        String accountType = span.getText();
-
-        span = columnContainer.findElement(By.xpath("div[2]/span"));
-        String customerNumber = span.getText();
-
-        span = columnContainer.findElement(By.xpath("div[3]/span"));
-        String corporateName = span.getText();
-
-        org.testng.Assert.assertTrue(customerNumber.equals(customerNumber));
-        org.testng.Assert.assertTrue(accountType.equals("Customer"));
-        org.testng.Assert.assertTrue(corporateName.equals(corporateName));
-
-    }
+//        //     click(driver.findElement(By.id("addDtlCancelCustomer")));
+//
+//    }
+//
+//    @Test(dependsOnMethods = "createBillToCustomerTest", priority = 4)
+//    public void viewCreatedBillToCustomer() {
+////        PageHelper.waitForJSandJQueryToLoad(driver);
+//        driver.findElement(By.id("txt_searchNumber")).clear();
+//        driver.findElement(By.id("txt_searchNumber")).sendKeys(billTocustomerNumber);
+//        click(driver.findElement(By.id("searchOne")));
+//        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
+//
+//        WebElement table = driver.findElement(By.id("list"));
+//        List<WebElement> rows = table.findElements(By.xpath(".//tr"));
+//        WebElement row = rows.get(1);
+//        click(row.findElement(By.xpath("td[@title='" + billTocustomerNumber + "']/a")));
+//
+//        WebElement columnContainer = driver.findElement(By.xpath("//div[@class='leftColumnContainer']"));
+//
+//        WebElement span = columnContainer.findElement(By.xpath("div[1]/span"));
+//        String accountType = span.getText();
+//
+//        span = columnContainer.findElement(By.xpath("div[2]/span"));
+//        String customerNumber = span.getText();
+//
+//        span = columnContainer.findElement(By.xpath("div[3]/span"));
+//        String corporateName = span.getText();
+//
+//        org.testng.Assert.assertTrue(customerNumber.equals(customerNumber));
+//        org.testng.Assert.assertTrue(accountType.equals("Customer"));
+//        org.testng.Assert.assertTrue(corporateName.equals(corporateName));
+//
+//    }
+//
+//    @Test( priority = 5)
+//    public void createReceivedFromCustomerTest() throws InterruptedException {
+//        PageHelper.chooseModule(driver, "Customer Management");
+//        //        PageHelper.chooseWarehouse(driver, 800);
+//
+//        //Search BTs before test
+//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Received From"));
+//        click(driver.findElement(By.id("searchOne")));
+//        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
+//
+//        click(driver.findElement(By.id("createNewBtn")));
+//
+//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Received From"));
+//
+////        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
+////        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys(customerNumber + 1);
+//
+//        driver.findElement(By.id("corporateName")).sendKeys(corporateName);
+//        driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
+//        driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
+//        driver.findElement(By.id("city")).sendKeys(ciTy);
+//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
+//
+//        driver.findElement(By.id("zip")).clear();
+//        driver.findElement(By.id("zip")).sendKeys(zipCode);
+//
+//
+//        receivedFromcustomerNumber = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
+//
+//        click(driver.findElement(By.id("basicDtlSubmit")));
+//        if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
+//            //if page wasn`t changed then it probably means we should verify address
+//            PageHelper.waitForJSandJQueryToLoad(driver);
+//            click(driver.findElement(By.id("addverify_enter")));
+//            driver.findElement(By.id("uspsCommentsDialog")).clear();
+//            driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
+//            click(driver.findElement(By.id("saveBtn")));
+//            click(driver.findElement(By.id("basicDtlSubmit")));
+//        }
+//
+////        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
+//
+//
+////        //Scrolling with Javascript was needed because the browser hides the page.
+////        JavascriptExecutor jsx = (JavascriptExecutor)driver;
+////        jsx.executeScript("window.scrollBy(0,450)", "");
+////
+////
+////        click(driver.findElement(By.id("additionalDtlSubmit")));
+//
+//        WebElement statusMsg = driver.findElement(By.xpath("//span[@id='message']"));
+//        if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains("created at the Enterprise"))
+//            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+//
+////        click(driver.findElement(By.id("cancelWhse")));
+//        //     click(driver.findElement(By.id("addDtlCancelCustomer")));
+//
+//    }
+//
+//    @Test(dependsOnMethods = "createReceivedFromCustomerTest", priority = 6)
+//    public void viewCreatedReceivedFromCustomer() {
+////        PageHelper.waitForJSandJQueryToLoad(driver);
+//        driver.findElement(By.id("txt_searchNumber")).clear();
+//        driver.findElement(By.id("txt_searchNumber")).sendKeys(receivedFromcustomerNumber);
+//        click(driver.findElement(By.id("searchOne")));
+//        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
+//
+//        WebElement table = driver.findElement(By.id("list"));
+//        List<WebElement> rows = table.findElements(By.xpath(".//tr"));
+//        WebElement row = rows.get(1);
+//        click(row.findElement(By.xpath("td[@title='" + receivedFromcustomerNumber + "']/a")));
+//
+//        WebElement columnContainer = driver.findElement(By.xpath("//div[@class='leftColumnContainer']"));
+//
+//        WebElement span = columnContainer.findElement(By.xpath("div[1]/span"));
+//        String accountType = span.getText();
+//
+//        span = columnContainer.findElement(By.xpath("div[2]/span"));
+//        String customerNumber = span.getText();
+//
+//        span = columnContainer.findElement(By.xpath("div[3]/span"));
+//        String corporateName = span.getText();
+//
+//        org.testng.Assert.assertTrue(customerNumber.equals(customerNumber));
+//        org.testng.Assert.assertTrue(accountType.equals("Customer"));
+//        org.testng.Assert.assertTrue(corporateName.equals(corporateName));
+//
+//    }
 
 }
