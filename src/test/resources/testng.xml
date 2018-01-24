@@ -18,12 +18,12 @@
             <!--<class name="com.uscold.mdmrepointaqa.test.barcode.AssingAndViewBarcodeTest"/>-->
         <!--</classes>-->
     <!--</test>-->
-    <!--<test name="create customer">-->
-        <!--<classes>-->
+    <test name="create customer">
+        <classes>
             <!--<class name="com.uscold.mdmrepointaqa.test.customers.ViewExistingCustomersPageTest"/>-->
-            <!--<class name="com.uscold.mdmrepointaqa.test.customers.CreateNewCustomerTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+            <class name="com.uscold.mdmrepointaqa.test.customer.CreateNewCustomerTest"/>
+        </classes>
+    </test>
     <!--<test name="create product">-->
         <!--<classes>-->
             <!--<class name="com.uscold.mdmrepointaqa.test.product.CreateAndViewCreatedProductTest"/>-->

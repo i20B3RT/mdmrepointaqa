@@ -13,12 +13,12 @@ public class InventorySearchTest extends AbstractTestClass {
 
     final static String WHSE = "800 - BETHLEHEM";
     final static String CU = "100100";
-    int cu_num =Integer.parseInt(CU);
+    int CU_int =Integer.parseInt(CU);
     final static String C_NAME ="ACE BAKERY LTD";
-    final static String USCS_Lot = "425309";
+//    final static String USCS_Lot = "425309";
     final static String P_CODE = "41208";
-    final static String Location = "01B 0014";
-    final static String License = "41019001";
+//    final static String Location = "01B 0014";
+//    final static String License = "41019001";
 //License 41019001 is in WIP status
 
 
@@ -35,11 +35,13 @@ public class InventorySearchTest extends AbstractTestClass {
         Assert.assertEquals(cst, WHSE.substring(0,3));
     }
 
-    @Test
+    @Test(priority = 1)
     public void searchCustomer() throws InterruptedException {
         PageHelper.chooseModule(driver, "Customer Management");
         PageHelper.chooseWarehouse(driver,WHSE);
-        PageHelper.chooseCustomer(driver,cu_num);
+        driver.findElement(By.id("txt_searchNumber")).sendKeys(CU);
+//        PageHelper.chooseCustomer(driver,cu_num);
+
         click(driver.findElement(By.id("searchOne")));
         WebElement spiner = driver.findElement(By.id("load_list"));
         wait.until(ExpectedConditions.invisibilityOf(spiner));
@@ -58,11 +60,11 @@ public class InventorySearchTest extends AbstractTestClass {
 
 
 
-    @Test
+    @Test(priority = 2)
     public void searchProduct() throws InterruptedException {
         PageHelper.chooseModule(driver, "Product Management");
         PageHelper.chooseWarehouse(driver,WHSE);
-//        PageHelper.chooseCustomer(driver,cu_num);
+//        PageHelper.chooseCustomer(driver,CU_int);
         driver.findElement(By.id("codeOrDesc")).sendKeys(P_CODE);
         click(driver.findElement(By.id("searchOne")));
         WebElement spiner = driver.findElement(By.id("load_list"));
