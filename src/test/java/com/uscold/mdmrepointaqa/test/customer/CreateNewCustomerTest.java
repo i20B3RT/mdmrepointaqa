@@ -20,6 +20,7 @@ import java.util.List;
 public class CreateNewCustomerTest extends AbstractTestClass {
 
     final static String WHSE = "800 - BETHLEHEM";
+    final static String entWHSE = "Enterprise";
     final static String WHSETEST = "8080808800 - BETHLEHEM";
     int WHSE_int =Integer.parseInt(WHSE.substring(1,3));
     final static String corporateName = "RE_POINT_TEST999";
@@ -29,6 +30,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
     final static String zipCode = "95014";
 
     private String customerNumber = "";
+    private String customerNumber1 = "100100";
     private String billTocustomerNumber = "";
     private String receivedFromcustomerNumber = "";
 
@@ -105,24 +107,51 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         click(driver.findElement(By.xpath("//input[@id='moveToRight']")));
         click(driver.findElement(By.xpath("//button[@id='done']")));
 
-        WebElement errMsg = driver.findElement(By.id("openErrorDialog"));
-        if (errMsg.isDisplayed()) {
-            throw new RuntimeException("Failed to push to the whse level");
+       //check if error isDisplayed if not it will check for success msg and click on the cancel to return to the landing page
+        WebElement erroriPresence   = driver.findElement(By.id("openErrorDialog"));
+        if (erroriPresence.isDisplayed()) {
+//            System.out.println(erroriPresence);
+            throw new RuntimeException("Error, The whse push failed"+erroriPresence);
         }else {
-           WebElement wReturned = driver.findElement(By.xpath(".//*[@id='hidebox']"));
-            if (!wReturned.isEnabled()) {
-                throw new RuntimeException("Failed to push to the whse level");
-
+//        super.isElementFound("openErrorDialog");
+            super.isElementFound("message");
             click(driver.findElement(By.id("cancelWhse")));
         }
+//        WebElement statusMsg = driver.findElement(By.xpath("//span[@id='message']"));
+//        if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains("created at the Enterprise"))
+//            throw new RuntimeException("Failed to create customer");
+
+
+//        WebElement errMsg = driver.findElement(By.id("openErrorDialog"));
+//        if (errMsg.isDisplayed()) {
+//            throw new RuntimeException("Error, The whse push failed");
+//        }else {
+//           WebElement wReturned = driver.findElement(By.xpath(".//*[@id='hidebox']"));
+//            if (!wReturned.isEnabled()) {
+//                throw new RuntimeException("Failed to push to the whse level");
+//
+//            click(driver.findElement(By.id("cancelWhse")));
+//        }
     }
 
-    @Test(dependsOnMethods = "createCustomerTest",priority = 3)
+    @Test//(dependsOnMethods = "createCustomerTest",priority = 3)
     public void viewCreatedCustomer() {
+//        PageHelper.chooseModule(driver, "Customer Management");
+        PageHelper.chooseWarehouse(driver,entWHSE);
+        PageHelper.chooseModule(driver, "Customer Management");
 //        PageHelper.waitForJSandJQueryToLoad(driver);
         driver.findElement(By.id("txt_searchNumber")).clear();
         driver.findElement(By.id("txt_searchNumber")).sendKeys(customerNumber);
         click(driver.findElement(By.id("searchOne")));
+
+
+//        click(driver.findElement(By.id("advSrchLink")));
+//        driver.findElement(By.xpath(" //input[@id='accountNumber']")).clear();
+//        driver.findElement(By.xpath(" //input[@id='accountNumber']")).sendKeys(customerNumber);
+//        click(driver.findElement(By.id("searchTwo")));
+
+
+
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
 
 
@@ -152,7 +181,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         org.testng.Assert.assertTrue(corporateName.equals(corporateName));
 
     }
-//
+
 //    @Test( priority = 3)
 //    public void createBillToCustomerTest() throws InterruptedException {
 //        PageHelper.chooseModule(driver, "Customer Management");

@@ -5,10 +5,7 @@ import com.uscold.mdmrepointaqa.test.util.TestConstants;
 import com.uscold.mdmrepointaqa.test.util.WebDriverFactory;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -96,6 +93,21 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
             return false;
         }
     }
+    public boolean isElementFound( String text) {
+        long startedAt = System.currentTimeMillis();
+        RuntimeException caughtEx = null;
+        try{
+            WebElement webElement = driver.findElement(By.id(text));
+            System.out.println("isElementFound : true :"+text + "true");
+            LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAt) + " to click on " + text);
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+            System.out.println("isElementFound : false :"+text);
+            return false;
+        }
+        return true;
+    }
+
 
     public WebDriver getDriver() {
         return driver;

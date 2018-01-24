@@ -37,6 +37,7 @@ public class InventorySearchTest extends AbstractTestClass {
 
     @Test(priority = 1)
     public void searchCustomer() throws InterruptedException {
+
         PageHelper.chooseModule(driver, "Customer Management");
         PageHelper.chooseWarehouse(driver,WHSE);
         driver.findElement(By.id("txt_searchNumber")).sendKeys(CU);
