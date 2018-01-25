@@ -54,6 +54,11 @@
             <class name="com.uscold.mdmrepointaqa.test.inventory.InventorySearchTest"/>
         </classes>
     </test>
+    <test name="Driver Maintenance">
+        <classes>
+            <class name="com.uscold.mdmrepointaqa.test.driver.CreateNewDriverTest"/>
+        </classes>
+    </test>
     <!--<test name="load zone map">-->
         <!--<classes>-->
             <!--<class name="com.uscold.mdmrepointaqa.test.CheckZoneMapForFortNorthTest"/>-->
