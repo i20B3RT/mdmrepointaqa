@@ -58,6 +58,8 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         driver.findElement(By.id("zip")).clear();
         driver.findElement(By.id("zip")).sendKeys(zipCode);
 
+        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
+        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys("300");
 
         customerNumber = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
 
@@ -134,53 +136,53 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //        }
     }
 
-    @Test//(dependsOnMethods = "createCustomerTest",priority = 3)
-    public void viewCreatedCustomer() {
+//    @Test//(dependsOnMethods = "createCustomerTest",priority = 3)
+//    public void viewCreatedCustomer() {
+////        PageHelper.chooseModule(driver, "Customer Management");
+//        PageHelper.chooseWarehouse(driver,entWHSE);
 //        PageHelper.chooseModule(driver, "Customer Management");
-        PageHelper.chooseWarehouse(driver,entWHSE);
-        PageHelper.chooseModule(driver, "Customer Management");
-//        PageHelper.waitForJSandJQueryToLoad(driver);
-        driver.findElement(By.id("txt_searchNumber")).clear();
-        driver.findElement(By.id("txt_searchNumber")).sendKeys(customerNumber);
-        click(driver.findElement(By.id("searchOne")));
-
-
-//        click(driver.findElement(By.id("advSrchLink")));
-//        driver.findElement(By.xpath(" //input[@id='accountNumber']")).clear();
-//        driver.findElement(By.xpath(" //input[@id='accountNumber']")).sendKeys(customerNumber);
-//        click(driver.findElement(By.id("searchTwo")));
-
-
-
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
-
-
+////        PageHelper.waitForJSandJQueryToLoad(driver);
+//        driver.findElement(By.id("txt_searchNumber")).clear();
 //        driver.findElement(By.id("txt_searchNumber")).sendKeys(customerNumber);
-//        List<WebElement> lis = driver.findElements(By.xpath("//ul[@class='ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all']/li"));
-//        click(lis.stream().filter(el -> el.getText().toLowerCase().contains(customerNumber)).findFirst().get());
-
-
-        WebElement table = driver.findElement(By.id("list"));
-        List<WebElement> rows = table.findElements(By.xpath(".//tr"));
-        WebElement row = rows.get(1);
-        click(row.findElement(By.xpath("td[@title='" + customerNumber + "']/a")));
-
-        WebElement columnContainer = driver.findElement(By.xpath("//div[@class='leftColumnContainer']"));
-
-        WebElement span = columnContainer.findElement(By.xpath("div[1]/span"));
-        String accountType = span.getText();
-
-        span = columnContainer.findElement(By.xpath("div[2]/span"));
-        String customerNumber = span.getText();
-
-        span = columnContainer.findElement(By.xpath("div[3]/span"));
-        String corporateName = span.getText();
-
-        org.testng.Assert.assertTrue(customerNumber.equals(customerNumber));
-        org.testng.Assert.assertTrue(accountType.equals("Customer"));
-        org.testng.Assert.assertTrue(corporateName.equals(corporateName));
-
-    }
+//        click(driver.findElement(By.id("searchOne")));
+//
+//
+////        click(driver.findElement(By.id("advSrchLink")));
+////        driver.findElement(By.xpath(" //input[@id='accountNumber']")).clear();
+////        driver.findElement(By.xpath(" //input[@id='accountNumber']")).sendKeys(customerNumber);
+////        click(driver.findElement(By.id("searchTwo")));
+//
+//
+//
+//        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
+//
+//
+////        driver.findElement(By.id("txt_searchNumber")).sendKeys(customerNumber);
+////        List<WebElement> lis = driver.findElements(By.xpath("//ul[@class='ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all']/li"));
+////        click(lis.stream().filter(el -> el.getText().toLowerCase().contains(customerNumber)).findFirst().get());
+//
+//
+//        WebElement table = driver.findElement(By.id("list"));
+//        List<WebElement> rows = table.findElements(By.xpath(".//tr"));
+//        WebElement row = rows.get(1);
+//        click(row.findElement(By.xpath("td[@title='" + customerNumber + "']/a")));
+//
+//        WebElement columnContainer = driver.findElement(By.xpath("//div[@class='leftColumnContainer']"));
+//
+//        WebElement span = columnContainer.findElement(By.xpath("div[1]/span"));
+//        String accountType = span.getText();
+//
+//        span = columnContainer.findElement(By.xpath("div[2]/span"));
+//        String customerNumber = span.getText();
+//
+//        span = columnContainer.findElement(By.xpath("div[3]/span"));
+//        String corporateName = span.getText();
+//
+//        org.testng.Assert.assertTrue(customerNumber.equals(customerNumber));
+//        org.testng.Assert.assertTrue(accountType.equals("Customer"));
+//        org.testng.Assert.assertTrue(corporateName.equals(corporateName));
+//
+//    }
 
 //    @Test( priority = 3)
 //    public void createBillToCustomerTest() throws InterruptedException {
