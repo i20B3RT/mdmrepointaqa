@@ -22,7 +22,7 @@ public class DriverMaintenanceTests extends AbstractTestClass {
     public String fistDriverFromGridList = "";
     private String firstRecordFoundOne = "";
     private String firstRecordFoundOne_int ="";
-//    private String recordSearched = "";
+    private String recordSearched = "";
 
 
 
@@ -44,20 +44,28 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         Assert.assertTrue(offNum > expectednumber,"No driver records were returned whit the name: "+driverName);
 
         //This will bring back the first record from column 3
+        WebElement d = driver.findElement(By.xpath("//tr[2][@class='ui-widget-content jqgrow ui-row-ltr']/td[3]"));
         fistDriverFromGridList =driver.findElement(By.xpath("//tr[2][@class='ui-widget-content jqgrow ui-row-ltr']/td[3]")).getAttribute("value");
+        System.out.print("This record was cached: "+fistDriverFromGridList);
 
-        int firstRecordFoundOne = Integer.parseInt(driver.findElement(By.xpath("//tr[2][@class='ui-widget-content jqgrow ui-row-ltr']/td[3]")).getText());
+        firstRecordFoundOne = driver.findElement(By.xpath("//tr[2][@class='ui-widget-content jqgrow ui-row-ltr']/td[3]")).getText();
+        System.out.print("This record was cached: "+firstRecordFoundOne);
+
         String firstRecordFoundOne_int = String.valueOf(firstRecordFoundOne);
+        System.out.print("This record was cached: "+firstRecordFoundOne_int);
+
+
     }
 
     @Test(dependsOnMethods = "SearchWhseLevelTest",priority = 2 )
     public void SearchFirstDriverReturedFromWhseLevelTest() throws InterruptedException {
         click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "sel_accountType_chosen","Driver #"));
 
+        driver.findElement(By.id("txt_accountType")).clear();
         //Send driver value to the driver basic search box, this value is caching on the tests above and when it sends it sends null
-        driver.findElement(By.id("txt_accountType")).sendKeys(String.valueOf(fistDriverFromGridList));
-        driver.findElement(By.id("txt_accountType")).sendKeys(String.valueOf(firstRecordFoundOne));
-        driver.findElement(By.id("txt_accountType")).sendKeys(String.valueOf(firstRecordFoundOne_int));
+        driver.findElement(By.id("txt_accountType")).sendKeys(firstRecordFoundOne);
+//        driver.findElement(By.id("txt_accountType")).sendKeys(String.valueOf(firstRecordFoundOne));
+//        driver.findElement(By.id("txt_accountType")).sendKeys(String.valueOf(firstRecordFoundOne_int));
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
 
