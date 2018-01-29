@@ -1,7 +1,7 @@
 package com.uscold.mdmrepointaqa.test.customer;
 
 import com.uscold.mdmrepointaqa.test.AbstractTestClass;
-import com.uscold.mdmrepointaqa.test.util.PageHelper;
+import com.uscold.mdmrepointaqa.test.utility.Assist;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -37,23 +37,23 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 
     @Test(priority = 1)
     public void createCustomerTest() throws InterruptedException {
-        PageHelper.chooseModule(driver, "Customer Management");
-//        PageHelper.chooseWarehouse(driver, 800);
+        Assist.chooseModule(driver, "Customer Management");
+//        Assist.chooseWarehouse(driver, 800);
 
         //Search BTs before test
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Customer"));
+        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Customer"));
         click(driver.findElement(By.id("searchOne")));
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
 
         click(driver.findElement(By.id("createNewBtn")));
 
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "customer"));
+        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "customer"));
 
         driver.findElement(By.id("corporateName")).sendKeys(corporateName);
         driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
         driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
         driver.findElement(By.id("city")).sendKeys(ciTy);
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
+        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
 
         driver.findElement(By.id("zip")).clear();
         driver.findElement(By.id("zip")).sendKeys(zipCode);
@@ -66,7 +66,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
         click(driver.findElement(By.id("basicDtlSubmit")));
         if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
             //if page wasn`t changed then it probably means we should verify address
-            PageHelper.waitForJSandJQueryToLoad(driver);
+
             click(driver.findElement(By.id("addverify_enter")));
             driver.findElement(By.id("uspsCommentsDialog")).clear();
             driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
@@ -74,7 +74,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
             click(driver.findElement(By.id("basicDtlSubmit")));
         }
 
-        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
+        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
 
         //Scrolling with Javascript was needed because the browser hides the page.
         JavascriptExecutor jsx = (JavascriptExecutor) driver;
@@ -138,10 +138,10 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 
 //    @Test//(dependsOnMethods = "createCustomerTest",priority = 3)
 //    public void viewCreatedCustomer() {
-////        PageHelper.chooseModule(driver, "Customer Management");
-//        PageHelper.chooseWarehouse(driver,entWHSE);
-//        PageHelper.chooseModule(driver, "Customer Management");
-////        PageHelper.waitForJSandJQueryToLoad(driver);
+////        Assist.chooseModule(driver, "Customer Management");
+//        Assist.chooseWarehouse(driver,entWHSE);
+//        Assist.chooseModule(driver, "Customer Management");
+////        Assist.waitForJSandJQueryToLoad(driver);
 //        driver.findElement(By.id("txt_searchNumber")).clear();
 //        driver.findElement(By.id("txt_searchNumber")).sendKeys(customerNumber);
 //        click(driver.findElement(By.id("searchOne")));
@@ -186,17 +186,17 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 
 //    @Test( priority = 3)
 //    public void createBillToCustomerTest() throws InterruptedException {
-//        PageHelper.chooseModule(driver, "Customer Management");
-//        //        PageHelper.chooseWarehouse(driver, 800);
+//        Assist.chooseModule(driver, "Customer Management");
+//        //        Assist.chooseWarehouse(driver, 800);
 //
 //        //Search BTs before test
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Bill To"));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Bill To"));
 //        click(driver.findElement(By.id("searchOne")));
 //        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
 //
 //        click(driver.findElement(By.id("createNewBtn")));
 //
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Bill To"));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Bill To"));
 //
 ////        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
 ////        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys(customerNumber + 1);
@@ -205,7 +205,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //        driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
 //        driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
 //        driver.findElement(By.id("city")).sendKeys(ciTy);
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
 //
 //        driver.findElement(By.id("zip")).clear();
 //        driver.findElement(By.id("zip")).sendKeys(zipCode);
@@ -216,7 +216,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //        click(driver.findElement(By.id("basicDtlSubmit")));
 //        if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
 //            //if page wasn`t changed then it probably means we should verify address
-//            PageHelper.waitForJSandJQueryToLoad(driver);
+//            Assist.waitForJSandJQueryToLoad(driver);
 //            click(driver.findElement(By.id("addverify_enter")));
 //            driver.findElement(By.id("uspsCommentsDialog")).clear();
 //            driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
@@ -224,7 +224,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //            click(driver.findElement(By.id("basicDtlSubmit")));
 //        }
 //
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
 //
 //
 //        //Scrolling with Javascript was needed because the browser hides the page.
@@ -245,7 +245,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //
 //    @Test(dependsOnMethods = "createBillToCustomerTest", priority = 4)
 //    public void viewCreatedBillToCustomer() {
-////        PageHelper.waitForJSandJQueryToLoad(driver);
+////        Assist.waitForJSandJQueryToLoad(driver);
 //        driver.findElement(By.id("txt_searchNumber")).clear();
 //        driver.findElement(By.id("txt_searchNumber")).sendKeys(billTocustomerNumber);
 //        click(driver.findElement(By.id("searchOne")));
@@ -275,17 +275,17 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //
 //    @Test( priority = 5)
 //    public void createReceivedFromCustomerTest() throws InterruptedException {
-//        PageHelper.chooseModule(driver, "Customer Management");
-//        //        PageHelper.chooseWarehouse(driver, 800);
+//        Assist.chooseModule(driver, "Customer Management");
+//        //        Assist.chooseWarehouse(driver, 800);
 //
 //        //Search BTs before test
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Received From"));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "accountType_chosen", "Received From"));
 //        click(driver.findElement(By.id("searchOne")));
 //        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
 //
 //        click(driver.findElement(By.id("createNewBtn")));
 //
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Received From"));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "type_chosen", "Received From"));
 //
 ////        driver.findElement(By.id("txt_ConsigneeNumber")).clear();
 ////        driver.findElement(By.id("txt_ConsigneeNumber")).sendKeys(customerNumber + 1);
@@ -294,7 +294,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //        driver.findElement(By.id("txt_ConsigneeName")).sendKeys(corporateName);
 //        driver.findElement(By.id("addressLine1")).sendKeys(addressLineOne);
 //        driver.findElement(By.id("city")).sendKeys(ciTy);
-//        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
+//        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "stateList_chosen", staTe));
 //
 //        driver.findElement(By.id("zip")).clear();
 //        driver.findElement(By.id("zip")).sendKeys(zipCode);
@@ -305,7 +305,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //        click(driver.findElement(By.id("basicDtlSubmit")));
 //        if (!driver.getCurrentUrl().toLowerCase().contains("customer/basicdetails/2/Next*//*.do")) {
 //            //if page wasn`t changed then it probably means we should verify address
-//            PageHelper.waitForJSandJQueryToLoad(driver);
+//            Assist.waitForJSandJQueryToLoad(driver);
 //            click(driver.findElement(By.id("addverify_enter")));
 //            driver.findElement(By.id("uspsCommentsDialog")).clear();
 //            driver.findElement(By.id("uspsCommentsDialog")).sendKeys("test");
@@ -313,7 +313,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //            click(driver.findElement(By.id("basicDtlSubmit")));
 //        }
 //
-////        click(PageHelper.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
+////        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "customerClassification_chosen", "meats"));
 //
 //
 ////        //Scrolling with Javascript was needed because the browser hides the page.
@@ -334,7 +334,7 @@ public class CreateNewCustomerTest extends AbstractTestClass {
 //
 //    @Test(dependsOnMethods = "createReceivedFromCustomerTest", priority = 6)
 //    public void viewCreatedReceivedFromCustomer() {
-////        PageHelper.waitForJSandJQueryToLoad(driver);
+////        Assist.waitForJSandJQueryToLoad(driver);
 //        driver.findElement(By.id("txt_searchNumber")).clear();
 //        driver.findElement(By.id("txt_searchNumber")).sendKeys(receivedFromcustomerNumber);
 //        click(driver.findElement(By.id("searchOne")));

@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test;
 
-import com.uscold.mdmrepointaqa.test.util.PageHelper;
+import com.uscold.mdmrepointaqa.test.utility.Assist;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -18,9 +18,9 @@ public class CheckZoneMapForFortNorthTest extends AbstractTestClass {
     @Test
     public void goToZoneMap() throws IOException, InterruptedException {
 
-        PageHelper.chooseModule(driver, "Zone Map");
+        Assist.chooseModule(driver, "Zone Map");
 
-        PageHelper.chooseWarehouse(driver, 160);
+        Assist.chooseWarehouse(driver, 160);
 
         WebElement divContainer = driver.findElement(By.xpath("//div[@id='search_in_chosen']"));
         WebElement a = divContainer.findElement(By.tagName("a"));

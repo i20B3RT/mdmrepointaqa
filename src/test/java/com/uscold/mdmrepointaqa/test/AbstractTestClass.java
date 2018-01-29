@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test;
 
-import com.uscold.mdmrepointaqa.test.util.PageHelper;
+import com.uscold.mdmrepointaqa.test.utility.Assist;
 import com.uscold.mdmrepointaqa.test.util.TestConstants;
 import com.uscold.mdmrepointaqa.test.util.WebDriverFactory;
 import org.apache.commons.lang3.BooleanUtils;
@@ -36,7 +36,7 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         driver = initDriver();
         wait = new WebDriverWait(driver, GET_ELEMENT_TIMEOUT);
         driver.manage().timeouts().implicitlyWait(TestConstants.GET_ELEMENT_TIMEOUT, TimeUnit.SECONDS);
-        PageHelper.loginWithCookies(driver, EWM_URL);
+        Assist.loginWithCookies(driver, EWM_URL);
     }
 
 
@@ -67,16 +67,16 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
     }
 
     protected void click(WebElement el, int maxWaitTimeMillis) {
-        PageHelper.click(el, maxWaitTimeMillis);
+        Assist.click(el, maxWaitTimeMillis);
     }
 
     protected void click(WebElement el) {
-        PageHelper.click(el, GET_ELEMENT_TIMEOUT * 1000);
+        Assist.click(el, GET_ELEMENT_TIMEOUT * 1000);
     }
 
     protected void click(By by) {
         WebElement el = driver.findElement(by);
-        PageHelper.click(el, GET_ELEMENT_TIMEOUT * 1000);
+        Assist.click(el, GET_ELEMENT_TIMEOUT * 1000);
     }
 
     long recordTimeForOperation(Runnable runnable) {

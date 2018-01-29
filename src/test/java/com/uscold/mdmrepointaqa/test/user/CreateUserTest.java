@@ -7,7 +7,7 @@ package com.uscold.mdmrepointaqa.test.user;
  **/
 
 import com.uscold.mdmrepointaqa.test.AbstractTestClass;
-import com.uscold.mdmrepointaqa.test.util.PageHelper;
+import com.uscold.mdmrepointaqa.test.utility.Assist;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -30,9 +30,9 @@ public class CreateUserTest extends AbstractTestClass {
 
     @Test
     public void createUserTest() throws InterruptedException {
-        PageHelper.chooseModule(driver,"User Management");
+        Assist.chooseModule(driver,"User Management");
         //choose warehouse
-        //PageHelper.chooseWarehouse(driver, 160);
+        //Assist.chooseWarehouse(driver, 160);
         //div id successMsg ; is successfully created
         click(driver.findElement(By.id("basicSearch")));
         click(driver.findElement(By.id("addNewUser")));

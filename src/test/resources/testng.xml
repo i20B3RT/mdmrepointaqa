@@ -56,7 +56,7 @@
     </test>
     <test name="Driver Maintenance">
         <classes>
-            <class name="com.uscold.mdmrepointaqa.test.driver.CreateNewDriverTest"/>
+            <class name="com.uscold.mdmrepointaqa.test.driver.DriverMaintenanceTests"/>
         </classes>
     </test>
     <!--<test name="load zone map">-->

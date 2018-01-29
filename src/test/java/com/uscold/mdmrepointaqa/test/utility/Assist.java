@@ -1,7 +1,9 @@
-package com.uscold.mdmrepointaqa.test.util;
+package com.uscold.mdmrepointaqa.test.utility;
+
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
@@ -13,10 +15,10 @@ import java.util.Set;
 
 import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
 
-public final class PageHelper {
-    private static final Logger LOGGER = Logger.getLogger(PageHelper.class);
+public class Assist {
+    private static final Logger LOGGER = Logger.getLogger(Assist.class);
     private static Set<Cookie> cookies = new HashSet<>();
-    private final static int maxWaitTimeMillisToBeUsedInChooseFunctions = 7000;
+    private final static int maxWaitTimeMillisToBeUsedInChooseFunctions = 3000;
 
     public static void click(WebElement el, int maxWaitTimeMillis) {
         long startedAt = System.currentTimeMillis();
@@ -40,7 +42,6 @@ public final class PageHelper {
         throw new RuntimeException("Waiting time is out for element to become clickable:" + el, caughtEx);
     }
 
-
     public static synchronized void loginWithCookies(WebDriver driver, String url) {
         if (cookies.isEmpty()) {
             try {
@@ -56,7 +57,6 @@ public final class PageHelper {
             driver.get(url);
         }
     }
-
 
     public static void login(WebDriver driver, String url) {
         driver.get(url);
@@ -82,7 +82,7 @@ public final class PageHelper {
     public static void chooseModule(WebDriver driver, String moduleName) {
         try {
             WebElement searchModule = driver.findElement(By.id("searchText"));
-            PageHelper.scrollTo(driver, searchModule);
+            Assist.scrollTo(driver, searchModule);
             click(searchModule);
             searchModule.clear();
             searchModule.sendKeys(moduleName);
@@ -117,6 +117,23 @@ public final class PageHelper {
         }
     }
 
+
+    public static void send(WebDriver driver,String byID, String sendKeysVal) {
+        driver.findElement(By.id(byID)).sendKeys(sendKeysVal);
+        WebElement idClicked = driver.findElement(By.id(byID));
+        System.out.print("[Assist] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+        //" was send to this id: -> "+idClicked+
+    }
+
+    public static boolean isElementPresent(WebDriver driver, By by) {
+        try {
+            driver.findElement(by);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
     public static void chooseWarehouse(WebDriver driver, int number) {
         chooseWarehouse(driver, String.valueOf(number));
     }
@@ -138,53 +155,6 @@ public final class PageHelper {
         driver.manage().window().maximize();
 
     }
-
-    @Deprecated
-    public static void waitForJSandJQueryToLoad(final WebDriver driver) {
-        waitForJSandJQueryToLoad(driver, GET_ELEMENT_TIMEOUT);
-    }
-
-    /**
-     * on one day, 'return jQuery.active' started to return 1 always, so now we can't rely on it.
-     *
-     * @param driver
-     * @param timeout max amount of seconds to wait
-     * @return
-     */
-    @Deprecated
-    public static void waitForJSandJQueryToLoad(final WebDriver driver, int timeout) {
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
-        long ts = System.currentTimeMillis();
-        // wait for jQuery to load
-        ExpectedCondition<Boolean> jQueryLoad = _driver -> {
-            try {
-
-                return (Integer) ((JavascriptExecutor) driver).executeScript("return jQuery.active") == 0;
-            } catch (Exception e) {
-                // no jQuery present
-                return true;
-            }
-        };
-
-        // wait for Javascript to load
-        ExpectedCondition<Boolean> jsLoad = _driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState")
-                .toString().equals("complete");
-
-        // return wait.until(jQueryLoad) && wait.until(jsLoad);
-        wait.until(jsLoad);
-
-        LOGGER.warn("Waiting for js took " + (System.currentTimeMillis() - ts));
-    }
-
-    public static boolean isElementPresent(WebDriver driver, By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
 
     static boolean isAlertPresent(WebDriver driver) {
         try {
@@ -225,12 +195,4 @@ public final class PageHelper {
         return accTypeContainer.findElements(By.xpath("div[@class='chosen-drop']/ul/li"));
     }
 
-
-/*private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id) throws InterruptedException {
-        WebElement accTypeContainer = driver.findElement(By.id(id));
-        WebElement aElem = accTypeContainer.findElement(By.cssSelector("a.chosen-single"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", aElem);
-        click(aElem);
-        return accTypeContainer.findElements(By.xpath("div[@class='chosen-drop']/ul/li"));
-    }*/
 }
