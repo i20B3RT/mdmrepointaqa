@@ -24,15 +24,22 @@ public class InventorySearchTest extends AbstractTestClass {
 
     @Test
     public void searchWarehouses() throws InterruptedException {
+
         Assist.chooseModule(driver, "Warehouse Management");
+
         driver.findElement(By.id("txt_searchNumber")).sendKeys(WHSE);
+
         click(driver.findElement(By.id("searchOne")));
+
         WebElement spiner = driver.findElement(By.id("load_list"));
+
         wait.until(ExpectedConditions.invisibilityOf(spiner));
 //        driver.findElement(By.id("OEDCREATEPOPUP-1_gCol_pCode")).sendKeys(PRODUCT_CODE.substring(0, 3));
 
         String cst = driver.findElement(By.xpath("//td[@title='" + WHSE.substring(0,3) + "'][1]")).getText();
+
         Assert.assertEquals(cst, WHSE.substring(0,3));
+
     }
 
     @Test(priority = 1)

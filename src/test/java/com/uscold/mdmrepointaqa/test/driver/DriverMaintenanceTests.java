@@ -14,6 +14,9 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
+import static com.uscold.mdmrepointaqa.test.utility.Assist.sendId;
+
+
 public class DriverMaintenanceTests extends AbstractTestClass {
 
 
@@ -40,7 +43,7 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         //Send driver value to the driver basic search box
         //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
 
-        Assist.send(driver,"txt_accountType",driverName);
+        sendId(driver,"txt_accountType",driverName);
 
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
@@ -65,7 +68,8 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         //Clear an send value from above test
         driver.findElement(By.id("txt_accountType")).clear();
         //System.out.print("This was used to search: "+firstRecordFoundOne);
-        driver.findElement(By.id("txt_accountType")).sendKeys(firstRecordFoundOne);
+        //driver.findElement(By.id("txt_accountType")).sendKeys(firstRecordFoundOne);
+        sendId(driver,"txt_accountType",firstRecordFoundOne);
 
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
@@ -112,7 +116,9 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         Assist.chooseWarehouse(driver, entNum);
 
         //Send driver value to the driver basic search box
-        driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
+        //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
+        sendId(driver,"txt_accountType",driverName);
+
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
 

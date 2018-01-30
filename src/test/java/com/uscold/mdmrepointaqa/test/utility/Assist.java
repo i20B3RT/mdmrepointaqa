@@ -118,11 +118,21 @@ public class Assist {
     }
 
 
-    public static void send(WebDriver driver,String byID, String sendKeysVal) {
-        driver.findElement(By.id(byID)).sendKeys(sendKeysVal);
-        WebElement idClicked = driver.findElement(By.id(byID));
-        System.out.print("[Assist] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
-        //" was send to this id: -> "+idClicked+
+    public static void sendId(WebDriver driver,String byID, String sendKeysVal) {
+        long startedAtSend = System.currentTimeMillis();
+                driver.findElement(By.id(byID)).sendKeys(sendKeysVal);
+//                System.out.print("[Assist] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+                //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
+                LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal+ " to ====================-> id:"+byID);
+                return;
+    }
+    public static void sendXp(WebDriver driver,String byXp, String sendKeysVal) {
+        long startedAtSend = System.currentTimeMillis();
+        driver.findElement(By.xpath(byXp)).sendKeys(sendKeysVal);
+//                System.out.print("[Assist] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+        //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
+        LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal+ " to ====================-> xpath:"+byXp);
+        return;
     }
 
     public static boolean isElementPresent(WebDriver driver, By by) {
