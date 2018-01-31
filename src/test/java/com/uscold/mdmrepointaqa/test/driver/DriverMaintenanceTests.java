@@ -1,20 +1,13 @@
 package com.uscold.mdmrepointaqa.test.driver;
 
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
 import com.uscold.mdmrepointaqa.test.AbstractTestClass;
-import com.uscold.mdmrepointaqa.test.utility.Assist;
-import org.apache.commons.io.FileUtils;
+import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.IOException;
-
-import static com.uscold.mdmrepointaqa.test.utility.Assist.sendId;
+import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendId;
 
 
 public class DriverMaintenanceTests extends AbstractTestClass {
@@ -37,8 +30,8 @@ public class DriverMaintenanceTests extends AbstractTestClass {
     @Test(priority = 1,description = "TC: Search drivers at the whse level")
     public void SearchWhseLevelTest()  {
 
-        Assist.chooseModule(driver, "Driver Maintenance");
-        Assist.chooseWarehouse(driver, WHSE);
+        AssistPage.chooseModule(driver, "Driver Maintenance");
+        AssistPage.chooseWarehouse(driver, WHSE);
 
         //Send driver value to the driver basic search box
         //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
@@ -57,13 +50,13 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         Assert.assertTrue(offNum > expectednumber,"No driver records were returned whit the name: "+driverName);
 
         firstRecordFoundOne = driver.findElement(By.xpath("//tr[2][@class='ui-widget-content jqgrow ui-row-ltr']/td[3]")).getText();
-        System.out.print("[Assist] [INFO] this driver record was cached: "+firstRecordFoundOne+" for searching with driver number at the whse level"+ System.lineSeparator());
+        System.out.print("[AssistPage] [INFO] this driver record was cached: "+firstRecordFoundOne+" for searching with driver number at the whse level"+ System.lineSeparator());
     }
 
     @Test(dependsOnMethods = "SearchWhseLevelTest",priority = 2 )
     public void DriverSearchWithDriverNumberFirstDriverReturedFromWhseLevelTest() throws InterruptedException {
         //Select from dropdown
-        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "sel_accountType_chosen","Driver #"));
+        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "sel_accountType_chosen","Driver #"));
 
         //Clear an send value from above test
         driver.findElement(By.id("txt_accountType")).clear();
@@ -93,7 +86,7 @@ public class DriverMaintenanceTests extends AbstractTestClass {
 
     @Test(priority = 3)
     public void SearchOnsiteDriversWhseLevelTest() throws InterruptedException {
-        click(Assist.chooseValueFromStandardDropDownByTextMatch(driver, "sel_accountType_chosen","Onsite"));
+        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "sel_accountType_chosen","Onsite"));
 
         click(driver.findElement(By.id("driverOnsiteYes")));
 
@@ -112,8 +105,8 @@ public class DriverMaintenanceTests extends AbstractTestClass {
     }
     @Test(priority = 4)
     public void SearchEntLevelTest() throws InterruptedException {
-        Assist.chooseModule(driver, "Driver Maintenance");
-        Assist.chooseWarehouse(driver, entNum);
+        AssistPage.chooseModule(driver, "Driver Maintenance");
+        AssistPage.chooseWarehouse(driver, entNum);
 
         //Send driver value to the driver basic search box
         //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);

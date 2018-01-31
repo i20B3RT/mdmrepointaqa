@@ -1,7 +1,7 @@
 package com.uscold.mdmrepointaqa.test.inventory;
 
 import com.uscold.mdmrepointaqa.test.AbstractTestClass;
-import com.uscold.mdmrepointaqa.test.utility.Assist;
+import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,7 +25,7 @@ public class InventorySearchTest extends AbstractTestClass {
     @Test
     public void searchWarehouses() throws InterruptedException {
 
-        Assist.chooseModule(driver, "Warehouse Management");
+        AssistPage.chooseModule(driver, "Warehouse Management");
 
         driver.findElement(By.id("txt_searchNumber")).sendKeys(WHSE);
 
@@ -45,10 +45,10 @@ public class InventorySearchTest extends AbstractTestClass {
     @Test(priority = 1)
     public void searchCustomer() throws InterruptedException {
 
-        Assist.chooseModule(driver, "Customer Management");
-        Assist.chooseWarehouse(driver,WHSE);
+        AssistPage.chooseModule(driver, "Customer Management");
+        AssistPage.chooseWarehouse(driver,WHSE);
         driver.findElement(By.id("txt_searchNumber")).sendKeys(CU);
-//        Assist.chooseCustomer(driver,cu_num);
+//        AssistPage.chooseCustomer(driver,cu_num);
 
         click(driver.findElement(By.id("searchOne")));
         WebElement spiner = driver.findElement(By.id("load_list"));
@@ -70,9 +70,9 @@ public class InventorySearchTest extends AbstractTestClass {
 
     @Test(priority = 2)
     public void searchProduct() throws InterruptedException {
-        Assist.chooseModule(driver, "Product Management");
-        Assist.chooseWarehouse(driver,WHSE);
-//        Assist.chooseCustomer(driver,CU_int);
+        AssistPage.chooseModule(driver, "Product Management");
+        AssistPage.chooseWarehouse(driver,WHSE);
+//        AssistPage.chooseCustomer(driver,CU_int);
         driver.findElement(By.id("codeOrDesc")).sendKeys(P_CODE);
         click(driver.findElement(By.id("searchOne")));
         WebElement spiner = driver.findElement(By.id("load_list"));
@@ -81,8 +81,8 @@ public class InventorySearchTest extends AbstractTestClass {
         Assert.assertEquals(cst, P_CODE);
 
 
-//        Assist.chooseModule(driver, "Inventory Maintenance");
-//        click(Assist.chooseValueFromStandardDropDownBySubstring(driver, "pem_cust_chosen", "select"));
+//        AssistPage.chooseModule(driver, "Inventory Maintenance");
+//        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "pem_cust_chosen", "select"));
 //
 //        driver.findElement(By.id("txt_SubProduct")).sendKeys(PRODUCT_CODE);
 //        click(driver.findElement(By.id("basicSrch")));

@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test;
 
-import com.uscold.mdmrepointaqa.test.utility.Assist;
+import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -46,7 +46,7 @@ public class HeadlessTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.manage().window().maximize();
-        //Assist.maximizeWindow(driver);
+        //AssistPage.maximizeWindow(driver);
         driver.get(EWM_URL);
         assert false;
         driver.findElement(By.tagName("body"));
@@ -57,10 +57,10 @@ public class HeadlessTest {
         passwordElement.sendKeys(System.getProperty("user.password"));
 
         driver.findElement(By.name("btn_login")).click();
-        Assist.chooseModule(driver,"Locations & Racks Setup");
+        AssistPage.chooseModule(driver,"Locations & Racks Setup");
 
         makeScreen();
-        Assist.chooseWarehouse(driver, 160);
+        AssistPage.chooseWarehouse(driver, 160);
     }
 
     int i = 1;

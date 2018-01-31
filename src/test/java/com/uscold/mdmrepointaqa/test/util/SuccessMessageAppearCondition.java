@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test.util;
 
-import com.uscold.mdmrepointaqa.test.utility.Assist;
+import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,7 +23,7 @@ public class SuccessMessageAppearCondition implements ExpectedCondition<Boolean>
     @Override
     public Boolean apply(@Nullable WebDriver driver) {
         WebElement statusMsg = driver.findElement(By.id(elementId));
-        Assist.scrollTo(driver, statusMsg);
+        AssistPage.scrollTo(driver, statusMsg);
         return statusMsg.isDisplayed() && statusMsg.getText().toLowerCase().contains(substringOfMessageToBePresented);
     }
 }

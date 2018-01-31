@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test;
 
-import com.uscold.mdmrepointaqa.test.utility.Assist;
+import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,9 +14,9 @@ public class ViewAllReceipts extends AbstractTestClass {
 
     @Test
     public void viewAllReceipts() throws InterruptedException {
-        Assist.chooseModule(driver, "Receipt Maintenance");
-        Assist.chooseWarehouse(driver, 160);
-        Assist.chooseCustomer(driver, 100950);
+        AssistPage.chooseModule(driver, "Receipt Maintenance");
+        AssistPage.chooseWarehouse(driver, 160);
+        AssistPage.chooseCustomer(driver, 100950);
         click(driver.findElement(By.id("basicSrch")));
 
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));

@@ -2,8 +2,6 @@ package com.uscold.mdmrepointaqa.test.utility;
 
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
@@ -15,8 +13,8 @@ import java.util.Set;
 
 import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
 
-public class Assist {
-    private static final Logger LOGGER = Logger.getLogger(Assist.class);
+public class AssistPage {
+    private static final Logger LOGGER = Logger.getLogger(AssistPage.class);
     private static Set<Cookie> cookies = new HashSet<>();
     private final static int maxWaitTimeMillisToBeUsedInChooseFunctions = 3000;
 
@@ -82,7 +80,7 @@ public class Assist {
     public static void chooseModule(WebDriver driver, String moduleName) {
         try {
             WebElement searchModule = driver.findElement(By.id("searchText"));
-            Assist.scrollTo(driver, searchModule);
+            AssistPage.scrollTo(driver, searchModule);
             click(searchModule);
             searchModule.clear();
             searchModule.sendKeys(moduleName);
@@ -121,7 +119,7 @@ public class Assist {
     public static void sendId(WebDriver driver,String byID, String sendKeysVal) {
         long startedAtSend = System.currentTimeMillis();
                 driver.findElement(By.id(byID)).sendKeys(sendKeysVal);
-//                System.out.print("[Assist] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+//                System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
                 //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
                 LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal+ " to ====================-> id:"+byID);
                 return;
@@ -129,7 +127,7 @@ public class Assist {
     public static void sendXp(WebDriver driver,String byXp, String sendKeysVal) {
         long startedAtSend = System.currentTimeMillis();
         driver.findElement(By.xpath(byXp)).sendKeys(sendKeysVal);
-//                System.out.print("[Assist] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+//                System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
         //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
         LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal+ " to ====================-> xpath:"+byXp);
         return;
@@ -196,8 +194,7 @@ public class Assist {
     private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id, String textToFind) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, GET_ELEMENT_TIMEOUT);
         WebElement accTypeContainer = driver.findElement(By.id(id));
-        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id),
-                "class", "chosen-disabled")));
+        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id),"class", "chosen-disabled")));
         WebElement aElem = accTypeContainer.findElement(By.cssSelector("a.chosen-single"));
         //scrollTo(driver,aElem);
         click(aElem);
