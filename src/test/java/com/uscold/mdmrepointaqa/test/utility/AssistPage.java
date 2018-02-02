@@ -16,7 +16,7 @@ import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEO
 public class AssistPage {
     private static final Logger LOGGER = Logger.getLogger(AssistPage.class);
     private static Set<Cookie> cookies = new HashSet<>();
-    private final static int maxWaitTimeMillisToBeUsedInChooseFunctions = 3000;
+    private final static int maxWaitTimeMillisToBeUsedInChooseFunctions = 7000;
 
     public static void click(WebElement el, int maxWaitTimeMillis) {
         long startedAt = System.currentTimeMillis();

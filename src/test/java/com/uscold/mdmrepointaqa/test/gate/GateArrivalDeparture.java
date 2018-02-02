@@ -129,8 +129,8 @@ public class GateArrivalDeparture  extends AbstractTestClass {
         //Click fuel 1/4
 //        click(driver.findElement(By.xpath("//a[contains(@class, 'ui-slider-handle ui-state-default ui-corner-all ui-state-focus ui-state-active ui-state-hover')]")));
         click(driver.findElement(By.xpath("txt_actualTemp")) );
-        WebElement.sendKeys(Keys.ENTER );
-        WebElement.sendKeys(Keys.ARROW_RIGHT );
+        driver.findElement(By.xpath("txt_actualTemp")).sendKeys(Keys.ENTER ,Keys.ARROW_RIGHT);
+//        WebElement.sendKeys(Keys.ARROW_RIGHT );
 
 
         //Click on no issues check box

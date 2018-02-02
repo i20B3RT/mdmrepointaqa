@@ -5,8 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
+//import com.relevantcodes.extentreports.ExtentReports;
+//import com.relevantcodes.extentreports.ExtentTest;
 
 
 public abstract class BaseTestNGTest {
@@ -14,10 +14,10 @@ public abstract class BaseTestNGTest {
 
 //    private String screenshotPath = "";
 
-    ExtentReports extent;
-    ExtentTest test;
-    ExtentTest logger;
-    WebDriver driver;
+//    ExtentReports extent;
+//    ExtentTest test;
+//    ExtentTest logger;
+//    WebDriver driver;
 
 
     @BeforeClass
