@@ -3,8 +3,11 @@ package com.uscold.mdmrepointaqa.test.gate;
 import com.uscold.mdmrepointaqa.test.AbstractTestClass;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,7 +15,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
 import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendId;
 
 public class GateArrivalDeparture  extends AbstractTestClass {
@@ -101,15 +106,19 @@ public class GateArrivalDeparture  extends AbstractTestClass {
 
         click(driver.findElement(By.id("txt_trailer")));
 
-        //Select length from dropdown
-        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerLengthArr", lengthVal));
-        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "txt_trailerLengthArr", lengthVal));
-//        click(AssistPage.clickOnDropDownLabel(driver,"txt_trailerLengthArr",lengthVal));
+        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerLengthArr_chosen", lengthVal));
 
-        //Select type from dropdown
-        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerTypeArr", typeVal));
-//        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "txt_trailerTypeArr", typeVal));
-//        click(AssistPage.clickOnDropDownLabel(driver,"txt_trailerTypeArr",lengthVal));
+        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerTypeArr_chosen", typeVal));
+
+//        //Select length from dropdown
+//        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerLengthArr", lengthVal));
+//        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "txt_trailerLengthArr", lengthVal));
+////        click(AssistPage.clickOnDropDownLabel(driver,"txt_trailerLengthArr",lengthVal));
+//
+//        //Select type from dropdown
+//        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerTypeArr", typeVal));
+////        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "txt_trailerTypeArr", typeVal));
+////        click(AssistPage.clickOnDropDownLabel(driver,"txt_trailerTypeArr",lengthVal));
 
         //Send driver set temp
         sendId(driver, "txt_setTemp", tempVal);
@@ -118,10 +127,15 @@ public class GateArrivalDeparture  extends AbstractTestClass {
         sendId(driver, "txt_actualTemp", tempVal);
 
         //Click fuel 1/4
-        click(driver.findElement(By.xpath("//a[contains(@class, 'ui-slider-handle ui-state-default ui-corner-all ui-state-focus ui-state-active ui-state-hover')]")));
+//        click(driver.findElement(By.xpath("//a[contains(@class, 'ui-slider-handle ui-state-default ui-corner-all ui-state-focus ui-state-active ui-state-hover')]")));
+        click(driver.findElement(By.xpath("txt_actualTemp")) );
+        WebElement.sendKeys(Keys.ENTER );
+        WebElement.sendKeys(Keys.ARROW_RIGHT );
+
 
         //Click on no issues check box
-        click(driver.findElement(By.id("chk_noIssues")));
+        click(driver.findElement(By.xpath("//input[@id='chk_noIssues']")));
+
 
 //        WebElement spiner = driver.findElement(By.id("load_list"));
 //        wait.until(ExpectedConditions.invisibilityOf(spiner));
@@ -140,4 +154,15 @@ public class GateArrivalDeparture  extends AbstractTestClass {
                 throw new RuntimeException("Failed to create bill to customer at the enterprise level");
         }
     }
+
+//    private static List<WebElement> clickOnDropDownGate(WebDriver driver, String id, String textToFind) throws InterruptedException {
+//        WebDriverWait wait = new WebDriverWait(driver, GET_ELEMENT_TIMEOUT);
+//        WebElement accTypeContainer = driver.findElement(By.id(id));
+//        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id),"class", "chosen-disabled")));
+//        WebElement aElem = accTypeContainer.findElement(By.cssSelector("a.chosen-single"));
+//        //scrollTo(driver,aElem);
+//        click(aElem);
+//        //accTypeContainer.findElement(By.xpath("./div/div/input")).sendKeys(textToFind);
+//        return accTypeContainer.findElements(By.xpath("//div[@class='chosen-drop']/ul/li"));
+//    }
 }

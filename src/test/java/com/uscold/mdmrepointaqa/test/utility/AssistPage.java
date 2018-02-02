@@ -199,6 +199,20 @@ public class AssistPage {
         //scrollTo(driver,aElem);
         click(aElem);
         //accTypeContainer.findElement(By.xpath("./div/div/input")).sendKeys(textToFind);
+
+//        WebElement idValTl = driver.findElement(By.id("txt_trailerLengthArr_chosen"));
+//        String idStrTl = String.valueOf(idValTl);
+////        int idIntTl = Integer.parseInt(idVal);
+//
+//        WebElement idValTt = driver.findElement(By.id("txt_trailerTypeArr"));
+//        String idStrTt = String.valueOf(idValTt);
+////        int idInt = Integer.parseInt(idVal);
+//
+//        if (idValTl.isDisplayed()&& idStrTl==id){
+//            return accTypeContainer.findElements(By.xpath("//div[@class='chosen-drop']/ul/li"));
+//        }else if (idValTt.isDisplayed()&& idStrTt==id){
+//            return accTypeContainer.findElements(By.xpath("//div[@class='chosen-drop']/ul/li"));
+//        }
         return accTypeContainer.findElements(By.xpath("div[@class='chosen-drop']/ul/li"));
     }
 
