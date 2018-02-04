@@ -16,6 +16,20 @@ import java.util.concurrent.TimeUnit;
 
 import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+import java.io.IOException;
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public abstract class AbstractTestClass extends BaseTestNGTest {
     private static final Logger LOGGER = Logger.getLogger(AbstractTestClass.class);
     private static final boolean IS_HEADLESS = BooleanUtils.toBoolean(System.getProperty("ui.headless"));
@@ -23,6 +37,9 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
+
+    public ExtentReports extent;
+    public ExtentTest extentTest;
 
     @BeforeSuite
     public void beforeSuite() {
@@ -39,6 +56,14 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         AssistPage.loginWithCookies(driver, EWM_URL);
     }
 
+    @BeforeTest
+    public void setExtent(){
+        extent = new ExtentReports(System.getProperty("user.dir")+"/test-output/ExtentReport.html", true);
+        extent.addSystemInfo("Host Name", "Naveen Mac");
+        extent.addSystemInfo("User Name", "Naveen Automation Labs");
+        extent.addSystemInfo("Environment", "QA");
+
+    }
 
     private WebDriver initDriver() {
         driver = WebDriverFactory.getDriver(getOptions(IS_HEADLESS));
@@ -64,6 +89,36 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
     public void afterTest() {
         driver.quit();
         LOGGER.info("Driver quit");
+    }
+
+    @AfterMethod
+    public void tearDown(ITestResult result) throws IOException{
+
+        if(result.getStatus()==ITestResult.FAILURE){
+            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getName()); //to add name in extent report
+            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getThrowable()); //to add error/exception in extent report
+
+            String screenshotPath = getScreenshot(driver, result.getName());
+            extentTest.log(LogStatus.FAIL, extentTest.addScreenCapture(screenshotPath)); //to add screenshot in extent report
+            //extentTest.log(LogStatus.FAIL, extentTest.addScreencast(screenshotPath)); //to add screencast/video in extent report
+        }
+        else if(result.getStatus()==ITestResult.SKIP){
+            extentTest.log(LogStatus.SKIP, "Test Case SKIPPED IS " + result.getName());
+        }
+        else if(result.getStatus()==ITestResult.SUCCESS){
+            extentTest.log(LogStatus.PASS, "Test Case PASSED IS " + result.getName());
+
+        }
+
+
+        extent.endTest(extentTest); //ending test and ends the current test and prepare to create html report
+        driver.quit();
+    }
+
+    @AfterTest
+    public void endReport(){
+        extent.flush();
+        extent.close();
     }
 
     protected void click(WebElement el, int maxWaitTimeMillis) {
@@ -111,5 +166,18 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public static String getScreenshot(WebDriver driver, String screenshotName) throws IOException{
+        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        // after execution, you could see a folder "FailedTestsScreenshots"
+        // under src folder
+        String destination = System.getProperty("user.dir") + "/FailedTestsScreenshots/" + screenshotName + dateName
+                + ".png";
+        File finalDestination = new File(destination);
+        FileUtils.copyFile(source, finalDestination);
+        return destination;
     }
 }

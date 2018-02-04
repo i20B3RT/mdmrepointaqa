@@ -68,9 +68,9 @@
         </profile>
         <profile>
             <id>9086</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
             <properties>
                 <user.username>mdmuser</user.username>
                 <user.password>mdmuser</user.password>
@@ -78,10 +78,21 @@
             </properties>
         </profile>
         <profile>
+            <id>9081</id>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
+            <properties>
+                <user.username>mdmuser</user.username>
+                <user.password>mdmuser</user.password>
+                <ewm.url>http://10.1.100.197:9081/ewm/home.htm</ewm.url>
+            </properties>
+        </profile>
+        <profile>
             <id>9082</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
             <properties>
                 <user.username>mdmuser</user.username>
                 <user.password>mdmuser</user.password>

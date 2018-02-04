@@ -2,10 +2,9 @@ package com.uscold.mdmrepointaqa.test.gate;
 
 import com.uscold.mdmrepointaqa.test.AbstractTestClass;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -49,6 +48,8 @@ public class GateArrivalDeparture  extends AbstractTestClass {
 
     @Test(priority = 1,description = "TC: Search drivers at the whse level")
     public void GateArrivalTest() throws InterruptedException  {
+
+        extentTest = extent.startTest("TC: Gate Arrival with new driver and trailer at" + WHSETEST + ".");
 
         AssistPage.chooseModule(driver, "Gate Arrival Departure");
         AssistPage.chooseWarehouse(driver, WHSE);
@@ -104,6 +105,8 @@ public class GateArrivalDeparture  extends AbstractTestClass {
         driver.findElement(By.id("txt_carrier_Arr")).clear();
         sendId(driver, "txt_carrier_Arr", carrierNumber);
 
+        driver.findElement(By.id("txt_carrier_Arr")).sendKeys(Keys.TAB);
+
         click(driver.findElement(By.id("txt_trailer")));
 
         click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerLengthArr_chosen", lengthVal));
@@ -127,18 +130,60 @@ public class GateArrivalDeparture  extends AbstractTestClass {
         sendId(driver, "txt_actualTemp", tempVal);
 
         //Click fuel 1/4
+        //Locate slider pointer.
+        WebElement dragElementFrom = driver.findElement(By.id("fuel_value"));
+
+        //To Move jQuery slider by 100 pixel offset using dragAndDropBy method of Actions class.
+        new Actions(driver).dragAndDropBy(dragElementFrom, 100, 0).build().perform();
+        Thread.sleep(5000);
+
+        //After 5 seconds, This will Move jQuery slider by 100 pixel offset using the combination of clickAndHold, moveByOffset and release methods of Actions class.
+        new Actions(driver).clickAndHold(dragElementFrom).moveByOffset(100,0).release().perform();
+
+
 //        click(driver.findElement(By.xpath("//a[contains(@class, 'ui-slider-handle ui-state-default ui-corner-all ui-state-focus ui-state-active ui-state-hover')]")));
-        click(driver.findElement(By.xpath("txt_actualTemp")) );
-        driver.findElement(By.xpath("txt_actualTemp")).sendKeys(Keys.ENTER ,Keys.ARROW_RIGHT);
+//        click(driver.findElement(By.xpath("//*[@id=\"fuel_value\"]")) );
+//        driver.findElement(By.xpath("//*[@id=\"fuel_value\"]")).sendKeys("value", "12.5")
+//        driver.findElement(By.xpath("//a[contains(@class, 'ui-slider-handle ui-state-default ui-corner-all ui-state-active ui-state-focus ui-state-hover')]")).sendKeys(Keys.ARROW_RIGHT ,Keys.ARROW_RIGHT);
 //        WebElement.sendKeys(Keys.ARROW_RIGHT );
 
+
+
+
+
+
+//        Dimension sliderSize = priceSlider.getSize();
+//        int sliderWidth = sliderSize.getWidth();
+//
+//        int xCoord = priceSlider.getLocation().getX();
+//
+//        Actions builder = new Actions(driver);
+//        builder.moveToElement(priceSlider).click().dragAndDropBy(priceSlider,xCoord + sliderWidth, 0).build().perform();
+
+
+//        WebElement hiddenPrice =  findHiddenElement(hiddenPriceLocator);
+//
+//        int priceValue = Integer.parseInt(hiddenPrice.getAttribute("value"));
+//
+////        assertEquals(priceValue, 1000000);
+//
+//        priceSlider = findElement(priceSliderLocator);
+//
+//        String sliderPercent = priceSlider.getAttribute("style");
+//
+////        assertTrue(sliderPercent.contains("left: 100"));
+
+
+        //Scrolling with Javascript was needed because the browser hides the botton of the page.
+        JavascriptExecutor jsx = (JavascriptExecutor)driver;
+        jsx.executeScript("window.scrollBy(0,450)", "");
 
         //Click on no issues check box
         click(driver.findElement(By.xpath("//input[@id='chk_noIssues']")));
 
-
 //        WebElement spiner = driver.findElement(By.id("load_list"));
 //        wait.until(ExpectedConditions.invisibilityOf(spiner));
+
 
         //Click on arrive button
         click(driver.findElement(By.id("id=btn_submit")));
