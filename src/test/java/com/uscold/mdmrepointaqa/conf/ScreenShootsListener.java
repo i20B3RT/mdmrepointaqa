@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.conf;
 
-import com.uscold.mdmrepointaqa.test.AbstractTestClass;
+import com.uscold.mdmrepointaqa.test.Abstract;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -29,8 +29,8 @@ public class ScreenShootsListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         String methodName = result.getName().toString().trim();
 
-        if (result.getInstance() instanceof AbstractTestClass) {
-            AbstractTestClass testClass = (AbstractTestClass) result.getInstance();
+        if (result.getInstance() instanceof Abstract) {
+            Abstract testClass = (Abstract) result.getInstance();
             WebDriver driver = testClass.getDriver();
             String screenName = testClass.getClass().getSimpleName() + ":" + methodName;
             takeScreenShot(driver, screenName);

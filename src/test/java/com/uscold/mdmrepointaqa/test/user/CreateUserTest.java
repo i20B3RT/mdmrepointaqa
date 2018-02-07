@@ -6,7 +6,7 @@ package com.uscold.mdmrepointaqa.test.user;
  * ********************************************
  **/
 
-import com.uscold.mdmrepointaqa.test.AbstractTestClass;
+import com.uscold.mdmrepointaqa.test.Abstract;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -15,7 +15,7 @@ import org.testng.log4testng.Logger;
 
 import java.util.List;
 
-public class CreateUserTest extends AbstractTestClass {
+public class CreateUserTest extends Abstract {
 
     private static final Logger LOGGER = Logger.getLogger(CreateUserTest.class);
 

@@ -11,7 +11,7 @@ import java.util.List;
 import static org.testng.log4testng.Logger.getLogger;
 
 
-public class CheckZoneMapForFortNorthTest extends AbstractTestClass {
+public class CheckZoneMapForFortNorthTest extends Abstract {
 
     public static org.testng.log4testng.Logger logger = getLogger(CheckZoneMapForFortNorthTest.class);
 

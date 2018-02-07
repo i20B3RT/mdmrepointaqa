@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class ViewAllReceiptsAngularTest extends AbstractTestClass {
+public class ViewAllReceiptsAngularTest extends Abstract {
 
     @Test
     public void viewAllReceiptsAngularTest() throws InterruptedException {

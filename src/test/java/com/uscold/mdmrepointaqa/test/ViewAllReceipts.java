@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 
-public class ViewAllReceipts extends AbstractTestClass {
+public class ViewAllReceipts extends Abstract {
 
     @Test
     public void viewAllReceipts() throws InterruptedException {

@@ -1,18 +1,24 @@
 package com.uscold.mdmrepointaqa.test.driver;
 
-import com.uscold.mdmrepointaqa.test.AbstractTestClass;
+import com.uscold.mdmrepointaqa.test.Abstract;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendId;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendInput;
 
 
-public class DriverMaintenanceTests extends AbstractTestClass {
+public class DriverMaintenanceSearchTests extends Abstract {
 
 
+//    AssistPage.date(driver);
     final static String WHSE = "800 - BETHLEHEM";
     int WHSE_int = Integer.parseInt(WHSE.substring(1, 3));
     final static String driverName = "JOHN";
@@ -25,9 +31,39 @@ public class DriverMaintenanceTests extends AbstractTestClass {
     private String firstRecordFoundOne = "";
     private String firstRecordFoundOne_int ="";
 //    private String recordSearched = "";
+    final static String driverID = "BTH";
+    final static String driverFirstName = "JOHN";
+    final static String driverLastName = "SMITH";
+    final static String driverContactNumber = "8888888888";
+    final static String driverTractorNumber = "TRK";
+    final static String trailerNumber = "TRL";
+    final static String carrierNumber = "90090";
+
+    //Fetch today's date and convert to a string plus_100.
+    Calendar dateTres = Calendar.getInstance();
+    Date dateUno = dateTres.getTime();
+    DateFormat dateForm = new SimpleDateFormat("YYMMddhhmm");
+    String toDay = dateForm.format(dateUno);
+
+//    @Test(priority = 1,description = "TC: Search drivers at the whse level")
+//    public void CreateNewDriverTest() {
+//
+//        AssistPage.chooseModule(driver, "Driver Maintenance");
+//        AssistPage.chooseWarehouse(driver, WHSE);
+//
+//        //Click on the search button using xpath
+//        click(driver.findElement(By.id("createNewBtn")));
+//
+//        sendInput(driver,"driverFirstName",driverFirstName);
+//
+//        sendInput(driver,"driverLastName",driverLastName);
+//
+//        sendInput(driver,"driverId",driverID+toDay);
+//
+//    }
 
 
-    @Test(priority = 1,description = "TC: Search drivers at the whse level")
+    @Test(priority = 2,description = "TC: Search drivers at the whse level")
     public void SearchWhseLevelTest()  {
 
         AssistPage.chooseModule(driver, "Driver Maintenance");
@@ -36,7 +72,7 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         //Send driver value to the driver basic search box
         //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
 
-        sendId(driver,"txt_accountType",driverName);
+        sendInput(driver,"id", "txt_accountType",driverName);
 
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
@@ -53,7 +89,7 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         System.out.print("[AssistPage] [INFO] this driver record was cached: "+firstRecordFoundOne+" for searching with driver number at the whse level"+ System.lineSeparator());
     }
 
-    @Test(dependsOnMethods = "SearchWhseLevelTest",priority = 2 )
+    @Test(dependsOnMethods = "SearchWhseLevelTest",priority = 3 )
     public void DriverSearchWithDriverNumberFirstDriverReturedFromWhseLevelTest() throws InterruptedException {
         //Select from dropdown
         click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "sel_accountType_chosen","Driver #"));
@@ -62,7 +98,7 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         driver.findElement(By.id("txt_accountType")).clear();
         //System.out.print("This was used to search: "+firstRecordFoundOne);
         //driver.findElement(By.id("txt_accountType")).sendKeys(firstRecordFoundOne);
-        sendId(driver,"txt_accountType",firstRecordFoundOne);
+        sendInput(driver,"id", "txt_accountType",firstRecordFoundOne);
 
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
@@ -103,14 +139,14 @@ public class DriverMaintenanceTests extends AbstractTestClass {
         Assert.assertTrue(offNumDos>expectednumber);
 
     }
-    @Test(priority = 4)
+    @Test(priority = 5)
     public void SearchEntLevelTest() throws InterruptedException {
         AssistPage.chooseModule(driver, "Driver Maintenance");
         AssistPage.chooseWarehouse(driver, entNum);
 
         //Send driver value to the driver basic search box
         //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
-        sendId(driver,"txt_accountType",driverName);
+        sendInput(driver,"id", "txt_accountType",driverName);
 
         //Click on the search button using xpath
         click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));

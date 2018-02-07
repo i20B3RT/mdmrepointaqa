@@ -2,14 +2,16 @@ package com.uscold.mdmrepointaqa.test.utility;
 
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
 
 import java.awt.*;
-import java.util.HashSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
 
@@ -116,22 +118,33 @@ public class AssistPage {
     }
 
 
-    public static void sendId(WebDriver driver,String byID, String sendKeysVal) {
+    public static void sendInput(WebDriver driver, String elType, String idORxpath, String sendKeysVal) {
         long startedAtSend = System.currentTimeMillis();
-                driver.findElement(By.id(byID)).sendKeys(sendKeysVal);
-//                System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
-                //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
-                LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal+ " to ====================-> id:"+byID);
-                return;
+        if (elType == "id") {
+            driver.findElement(By.id(idORxpath)).clear();
+            driver.findElement(By.id(idORxpath)).sendKeys(sendKeysVal);
+//          System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+            //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
+            LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal + " to ====================-> id:" + idORxpath);
+            return;
+        } else if (elType == "xp") {
+            driver.findElement(By.xpath(idORxpath)).clear();
+            driver.findElement(By.xpath(idORxpath)).sendKeys(sendKeysVal);
+//          System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+            //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
+            LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal + " to ====================-> id:" + idORxpath);
+            return;
+        }
     }
-    public static void sendXp(WebDriver driver,String byXp, String sendKeysVal) {
-        long startedAtSend = System.currentTimeMillis();
-        driver.findElement(By.xpath(byXp)).sendKeys(sendKeysVal);
-//                System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
-        //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
-        LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal+ " to ====================-> xpath:"+byXp);
-        return;
-    }
+
+//    public static void sendXp(WebDriver driver, String byXp, String sendKeysVal) {
+//        long startedAtSend = System.currentTimeMillis();
+//        driver.findElement(By.xpath(byXp)).sendKeys(sendKeysVal);
+////                System.out.print("[AssistPage] [INFO] this value was send. value:  ->" + sendKeysVal + System.lineSeparator());
+//        //LOGGER.info("this value was send. value:  ->" + sendKeysVal);
+//        LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal + " to ====================-> xpath:" + byXp);
+//        return;
+//    }
 
     public static boolean isElementPresent(WebDriver driver, By by) {
         try {
@@ -194,7 +207,7 @@ public class AssistPage {
     private static List<WebElement> clickOnDropDownLabel(WebDriver driver, String id, String textToFind) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, GET_ELEMENT_TIMEOUT);
         WebElement accTypeContainer = driver.findElement(By.id(id));
-        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id),"class", "chosen-disabled")));
+        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.id(id), "class", "chosen-disabled")));
         WebElement aElem = accTypeContainer.findElement(By.cssSelector("a.chosen-single"));
         //scrollTo(driver,aElem);
         click(aElem);
@@ -215,5 +228,13 @@ public class AssistPage {
 //        }
         return accTypeContainer.findElements(By.xpath("div[@class='chosen-drop']/ul/li"));
     }
+
+//    public date() {
+//    //Fetch today's date and convert to a string plus_100.
+//    Calendar dateTwo = Calendar.getInstance();
+//    Date dateOne = dateTwo.getTime();
+//    DateFormat dateForm = new SimpleDateFormat("YYMMddhhmm");
+//    String tDay = dateForm.format(dateOne);
+//}
 
 }

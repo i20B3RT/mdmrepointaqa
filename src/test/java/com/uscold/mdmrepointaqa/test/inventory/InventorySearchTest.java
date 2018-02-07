@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test.inventory;
 
-import com.uscold.mdmrepointaqa.test.AbstractTestClass;
+import com.uscold.mdmrepointaqa.test.Abstract;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class InventorySearchTest extends AbstractTestClass {
+public class InventorySearchTest extends Abstract {
 
     final static String WHSE = "800 - BETHLEHEM";
     final static String CU = "100100";

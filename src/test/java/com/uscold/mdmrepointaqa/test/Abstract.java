@@ -8,9 +8,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
+import org.testng.ITestContext;
+import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,18 +19,15 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.AfterTest;
+
 import java.io.IOException;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractTestClass extends BaseTestNGTest {
-    private static final Logger LOGGER = Logger.getLogger(AbstractTestClass.class);
+public abstract class Abstract extends BaseTestNGTest {
+    private static final Logger LOGGER = Logger.getLogger(Abstract.class);
     private static final boolean IS_HEADLESS = BooleanUtils.toBoolean(System.getProperty("ui.headless"));
     public static final String EWM_URL = System.getProperty("ewm.url");
 
@@ -40,6 +36,7 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
 
     public ExtentReports extent;
     public ExtentTest extentTest;
+    public static ExtentTest logger;
 
     @BeforeSuite
     public void beforeSuite() {
@@ -59,11 +56,18 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
     @BeforeTest
     public void setExtent(){
         extent = new ExtentReports(System.getProperty("user.dir")+"/test-output/ExtentReport.html", true);
-        extent.addSystemInfo("Host Name", "Naveen Mac");
-        extent.addSystemInfo("User Name", "Naveen Automation Labs");
-        extent.addSystemInfo("Environment", "QA");
+        extent.addSystemInfo("Host Name", "PC");
+        extent.addSystemInfo("User Name", "Robert Morales");
+        extent.addSystemInfo("Environment", "eWM: 9109");
+//        extentTest = extent.startTest(testName.getName(), "");
 
     }
+
+//    @BeforeMethod
+//    public static void createParentNode(ITestContext testName)
+//    {
+//        extentTest = extent.startTest(testName.getName(), "");
+//    }
 
     private WebDriver initDriver() {
         driver = WebDriverFactory.getDriver(getOptions(IS_HEADLESS));
@@ -91,7 +95,7 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         LOGGER.info("Driver quit");
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) throws IOException{
 
         if(result.getStatus()==ITestResult.FAILURE){
@@ -104,10 +108,11 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         }
         else if(result.getStatus()==ITestResult.SKIP){
             extentTest.log(LogStatus.SKIP, "Test Case SKIPPED IS " + result.getName());
+            //logger.log(LogStatus.SKIP, this.getClass().getSimpleName() + " Test Case Skipped");
         }
         else if(result.getStatus()==ITestResult.SUCCESS){
             extentTest.log(LogStatus.PASS, "Test Case PASSED IS " + result.getName());
-
+            //logger.log(LogStatus.PASS, this.getClass().getSimpleName() + " Test Case Success and Title Verified");
         }
 
 
@@ -115,7 +120,7 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         driver.quit();
     }
 
-    @AfterTest
+    @AfterTest(alwaysRun = true)
     public void endReport(){
         extent.flush();
         extent.close();
@@ -163,7 +168,6 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         return true;
     }
 
-
     public WebDriver getDriver() {
         return driver;
     }
@@ -174,8 +178,7 @@ public abstract class AbstractTestClass extends BaseTestNGTest {
         File source = ts.getScreenshotAs(OutputType.FILE);
         // after execution, you could see a folder "FailedTestsScreenshots"
         // under src folder
-        String destination = System.getProperty("user.dir") + "/FailedTestsScreenshots/" + screenshotName + dateName
-                + ".png";
+        String destination = System.getProperty("user.dir") + "/FailedTestsScreenshots/" + screenshotName + dateName + ".png";
         File finalDestination = new File(destination);
         FileUtils.copyFile(source, finalDestination);
         return destination;

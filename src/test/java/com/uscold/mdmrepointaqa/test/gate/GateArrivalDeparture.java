@@ -1,25 +1,19 @@
 package com.uscold.mdmrepointaqa.test.gate;
 
-import com.uscold.mdmrepointaqa.test.AbstractTestClass;
+import com.uscold.mdmrepointaqa.test.Abstract;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
-import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendId;
+import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendInput;
 
-public class GateArrivalDeparture  extends AbstractTestClass {
+public class GateArrivalDeparture extends Abstract {
 
 
     final static String WHSE = "800 - BETHLEHEM";
@@ -37,19 +31,21 @@ public class GateArrivalDeparture  extends AbstractTestClass {
 
     final static String WHSETEST = "800 - BETHLEHEM";
     final static String entNum = "Enterprise";
+
+    //Validation and cache data
     int expectednumber = 1;
     private String offNumTotal = "";
     private String offNumOnsiteTotal = "";
     public String fistDriverFromGridList = "";
     private String firstRecordFoundOne = "";
-    private String firstRecordFoundOne_int ="";
+    private String firstRecordFoundOne_int = "";
 //    private String recordSearched = "";
 
 
-    @Test(priority = 1,description = "TC: Search drivers at the whse level")
-    public void GateArrivalTest() throws InterruptedException  {
+    @Test(priority = 1, description = "TC: Search drivers at the whse level")
+    public void GateArrivalTest() throws InterruptedException {
 
-        extentTest = extent.startTest("TC: Gate Arrival with new driver and trailer at" + WHSETEST + ".");
+        extentTest = extent.startTest("TC: Gate Arrival with new driver and trailer at " + WHSETEST + ".");
 
         AssistPage.chooseModule(driver, "Gate Arrival Departure");
         AssistPage.chooseWarehouse(driver, WHSE);
@@ -62,20 +58,20 @@ public class GateArrivalDeparture  extends AbstractTestClass {
         wait.until(ExpectedConditions.invisibilityOf(spiner));
 
         //Send driver value to the driver id and send id
-        driver.findElement(By.id("txt_driverID")).clear();
-        sendId(driver, "txt_driverID", driverID);
+//        driver.findElement(By.id("txt_driverID")).clear();
+        sendInput(driver,"id", "txt_driverID", driverID);
 
         //Send driver value - first name
         driver.findElement(By.id("txt_driverFirstName")).clear();
-        sendId(driver, "txt_driverFirstName", driverFirstName);
+        sendInput(driver,"id",  "txt_driverFirstName", driverFirstName);
 
         //Send driver value - last name
         driver.findElement(By.id("txt_driverLastName")).clear();
-        sendId(driver, "txt_driverLastName", driverLastName);
+        sendInput(driver, "id", "txt_driverLastName", driverLastName);
 
         //Send driver value - driver contact
         driver.findElement(By.id("txt_driverContactNumber")).clear();
-        sendId(driver, "txt_driverContactNumber", driverContactNumber);
+        sendInput(driver,"id",  "txt_driverContactNumber", driverContactNumber);
 
 
         //Fetch today's date and convert to a string plus_100.
@@ -86,14 +82,14 @@ public class GateArrivalDeparture  extends AbstractTestClass {
 
 //        //Send driver value to the driver basic search box
 //        driver.findElement(By.id("txt_tractor")).clear();
-//        sendId(driver, "txt_tractor", driverTractorNumber);
+//        sendInput(driver, "txt_tractor", driverTractorNumber);
 
 
         //Clear and enter tractor number
         driver.findElement(By.id("txt_tractor")).clear();
         driver.findElement(By.id("txt_tractor")).sendKeys(driverTractorNumber + tDay);
 
-        //Click on appt check boz
+        //Click on appt check box
         click(driver.findElement(By.id("appointmentcheckbox")));
 
         //Clear and enter trailer number
@@ -103,34 +99,27 @@ public class GateArrivalDeparture  extends AbstractTestClass {
 
         //Clear and send carrier value
         driver.findElement(By.id("txt_carrier_Arr")).clear();
-        sendId(driver, "txt_carrier_Arr", carrierNumber);
+        sendInput(driver,"id",  "txt_carrier_Arr", carrierNumber+Keys.TAB);
 
         driver.findElement(By.id("txt_carrier_Arr")).sendKeys(Keys.TAB);
 
         click(driver.findElement(By.id("txt_trailer")));
 
+        //Select length from dropdown
         click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerLengthArr_chosen", lengthVal));
 
+        //Select length from dropdown
         click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerTypeArr_chosen", typeVal));
 
-//        //Select length from dropdown
-//        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerLengthArr", lengthVal));
-//        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "txt_trailerLengthArr", lengthVal));
-////        click(AssistPage.clickOnDropDownLabel(driver,"txt_trailerLengthArr",lengthVal));
-//
-//        //Select type from dropdown
-//        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "txt_trailerTypeArr", typeVal));
-////        click(AssistPage.chooseValueFromStandardDropDownBySubstring(driver, "txt_trailerTypeArr", typeVal));
-////        click(AssistPage.clickOnDropDownLabel(driver,"txt_trailerTypeArr",lengthVal));
-
         //Send driver set temp
-        sendId(driver, "txt_setTemp", tempVal);
+        sendInput(driver, "id", "txt_setTemp", tempVal);
 
         //Send driver actual temp
-        sendId(driver, "txt_actualTemp", tempVal);
+        sendInput(driver, "id", "txt_actualTemp", tempVal);
 
         //Click adn send tab key to set fuel to 1/4
         driver.findElement(By.xpath("//a[@class='ui-slider-handle ui-state-default ui-corner-all']")).sendKeys(Keys.ARROW_RIGHT);
+//        sendInput(driver,"xp","//a[@class='ui-slider-handle ui-state-default ui-corner-all']",Keys.ARROW_RIGHT);
 
         //Click on no issues check box
         click(driver.findElement(By.xpath("//input[@id='chk_noIssues']")));
@@ -138,20 +127,25 @@ public class GateArrivalDeparture  extends AbstractTestClass {
 //        WebElement spiner = driver.findElement(By.id("load_list"));
 //        wait.until(ExpectedConditions.invisibilityOf(spiner));
 
+//        WebElement NewDriverIdUno = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
+//        WebElement NewDriverIdDos = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("text");
+//        WebElement NewDriverIdTres = driver.findElement(By.id("txt_ConsigneeNumber")).getText();
 
         //Click on arrive button
-        click(driver.findElement(By.id("id=btn_submit")));
+        click(driver.findElement(By.id("btn_submit")));
 
         WebElement statusMsg = driver.findElement(By.xpath("//span/div[contains(@class, 'successMsg ng-binding')]"));
         if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains(trailerNumber)) {
             throw new RuntimeException("Failed to create bill to customer at the enterprise level");
-        }else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName)){
+        } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName)) {
 //            if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName))
-                throw new RuntimeException("Failed to create bill to customer at the enterprise level");
-        }else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName)){
- //           if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName))
-                throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+        } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName)) {
+            //           if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName))
+            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
         }
+
+
     }
-    
+
 }

@@ -1,6 +1,6 @@
 package com.uscold.mdmrepointaqa.test.customer;
 
-import com.uscold.mdmrepointaqa.test.AbstractTestClass;
+import com.uscold.mdmrepointaqa.test.Abstract;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,7 +17,7 @@ import java.util.List;
  * ********************************************
  **/
 
-public class CreateNewCustomerTest extends AbstractTestClass {
+public class CreateNewCustomerTest extends Abstract {
 
     final static String WHSE = "800 - BETHLEHEM";
     final static String entWHSE = "Enterprise";
