@@ -93,13 +93,19 @@ public class AssistPage {
     }
 
     public static void chooseWarehouse(WebDriver driver, final String substring) {
+
         WebElement whSelect = driver.findElement(By.id("globalWarehouseSelect_chosen"));
         whSelect.findElement(By.xpath(".//a[@class='chosen-single']")).click();
         List<WebElement> warehouses = whSelect.findElements(By.xpath(".//div[@class='chosen-drop']//ul[@class='chosen-results']/li"));
+        try {
         WebElement dropDownElem = warehouses.stream().filter(wh -> wh.getText().contains(substring)).findFirst().get();
         click(dropDownElem, maxWaitTimeMillisToBeUsedInChooseFunctions);
         if (isElementPresent(driver, By.id("warehouseOk")))
             click(driver.findElement(By.id("warehouseOk")), maxWaitTimeMillisToBeUsedInChooseFunctions);
+        } catch (NoSuchElementException e) {
+            System.out.println("The whse could not be clicked!");
+            e.printStackTrace();
+        }
 
     }
 

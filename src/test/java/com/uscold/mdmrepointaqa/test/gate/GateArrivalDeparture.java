@@ -17,6 +17,7 @@ public class GateArrivalDeparture extends Abstract {
 
 
     final static String WHSE = "800 - BETHLEHEM";
+    final static String WHSE_NUM = "800";
     int WHSE_int = Integer.parseInt(WHSE.substring(1, 3));
     final static String driverID = "BTH12345";
     final static String driverFirstName = "JOHN";
@@ -47,8 +48,14 @@ public class GateArrivalDeparture extends Abstract {
 
         extentTest = extent.startTest("TC: Gate Arrival with new driver and trailer at " + WHSETEST + ".");
 
+        //Fetch today's date and convert to a string plus_100.
+        Calendar dateTwo = Calendar.getInstance();
+        Date dateOne = dateTwo.getTime();
+        DateFormat dateForm = new SimpleDateFormat("YYMMddhhmmss");
+        String tDay = dateForm.format(dateOne);
+
         AssistPage.chooseModule(driver, "Gate Arrival Departure");
-        AssistPage.chooseWarehouse(driver, WHSE);
+        AssistPage.chooseWarehouse(driver, WHSE_NUM);
 
         //Click on the arrival tile box using xpath
 //        click(driver.findElement(By.xpath("//div[@id='arrival']/div[contains(@class, 'boxAriDepImg')]/img[contains(@class, 'marginTop15')]/@src")));
@@ -57,9 +64,15 @@ public class GateArrivalDeparture extends Abstract {
         WebElement spiner = driver.findElement(By.xpath("//div[contains(@class, 'pageLoadingThrobber')]"));
         wait.until(ExpectedConditions.invisibilityOf(spiner));
 
+
+
+        //Clear and send carrier value
+        driver.findElement(By.id("txt_carrier_Arr")).clear();
+        sendInput(driver,"id",  "txt_carrier_Arr", carrierNumber+Keys.ARROW_UP);
+
         //Send driver value to the driver id and send id
 //        driver.findElement(By.id("txt_driverID")).clear();
-        sendInput(driver,"id", "txt_driverID", driverID);
+        sendInput(driver,"id", "txt_driverID", WHSE_NUM+driverFirstName.substring(1,1)+driverLastName.substring(1,1)+tDay);
 
         //Send driver value - first name
         driver.findElement(By.id("txt_driverFirstName")).clear();
@@ -74,11 +87,7 @@ public class GateArrivalDeparture extends Abstract {
         sendInput(driver,"id",  "txt_driverContactNumber", driverContactNumber);
 
 
-        //Fetch today's date and convert to a string plus_100.
-        Calendar dateTwo = Calendar.getInstance();
-        Date dateOne = dateTwo.getTime();
-        DateFormat dateForm = new SimpleDateFormat("YYMMddhhmm");
-        String tDay = dateForm.format(dateOne);
+
 
 //        //Send driver value to the driver basic search box
 //        driver.findElement(By.id("txt_tractor")).clear();
@@ -97,10 +106,7 @@ public class GateArrivalDeparture extends Abstract {
         driver.findElement(By.id("txt_trailer")).sendKeys(trailerNumber + tDay);
 
 
-        //Clear and send carrier value
-        driver.findElement(By.id("txt_carrier_Arr")).clear();
-        sendInput(driver,"id",  "txt_carrier_Arr", carrierNumber+Keys.TAB);
-
+        driver.findElement(By.id("txt_trailer")).sendKeys(Keys.TAB);
         driver.findElement(By.id("txt_carrier_Arr")).sendKeys(Keys.TAB);
 
         click(driver.findElement(By.id("txt_trailer")));
@@ -134,15 +140,27 @@ public class GateArrivalDeparture extends Abstract {
         //Click on arrive button
         click(driver.findElement(By.id("btn_submit")));
 
-        WebElement statusMsg = driver.findElement(By.xpath("//span/div[contains(@class, 'successMsg ng-binding')]"));
+        //Add spinner logic
+        //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        WebElement Gatespiner = driver.findElement(By.xpath("//div[contains(@class, 'ewmsThrobber')]"));
+        wait.until(ExpectedConditions.invisibilityOf(Gatespiner));
+
+
+
+        //Make this into a method withh try catch to catch image of failed.
+        --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        WebElement statusMsg = driver.findElement(By.id("reportWarningMsg"));
+//        WebElement statusMsg = driver.findElement(By.xpath("//span/div[contains(@class, 'successMsg ng-binding')]"));
         if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains(trailerNumber)) {
-            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+            throw new RuntimeException("IF ONE - Failed to create bill to customer at the enterprise level");
         } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName)) {
 //            if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName))
-            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+            throw new RuntimeException("IF TWO - Failed to create bill to customer at the enterprise level");
         } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName)) {
             //           if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName))
-            throw new RuntimeException("Failed to create bill to customer at the enterprise level");
+            throw new RuntimeException("IF THREE - Failed to create bill to customer at the enterprise level");
         }
 
 
