@@ -113,6 +113,9 @@ public abstract class Abstract extends BaseTestNGTest {
         else if(result.getStatus()==ITestResult.SUCCESS){
             extentTest.log(LogStatus.PASS, "Test Case PASSED IS " + result.getName());
             //logger.log(LogStatus.PASS, this.getClass().getSimpleName() + " Test Case Success and Title Verified");
+            String screenshotPath = getScreenshot(driver, result.getName());
+            extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath)); //to add screenshot in extent report
+            //extentTest.log(LogStatus.FAIL, extentTest.addScreencast(screenshotPath)); //to add screencast/video in extent report
         }
 
 

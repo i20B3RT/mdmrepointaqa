@@ -61,10 +61,10 @@ public class GateArrivalDeparture extends Abstract {
 //        click(driver.findElement(By.xpath("//div[@id='arrival']/div[contains(@class, 'boxAriDepImg')]/img[contains(@class, 'marginTop15')]/@src")));
         click(driver.findElement(By.xpath("//div[@id='arrival']/div[contains(@class, 'boxAriDepImg')]")));
 
-        WebElement spiner = driver.findElement(By.xpath("//div[contains(@class, 'pageLoadingThrobber')]"));
-        wait.until(ExpectedConditions.invisibilityOf(spiner));
+//        WebElement spiner = driver.findElement(By.xpath("//div[contains(@class, 'pageLoadingThrobber')]"));
+//        wait.until(ExpectedConditions.invisibilityOf(spiner));
 
-
+        AssistPage.waitOnThrobber(driver,"xpath","//div[contains(@class, 'pageLoadingThrobber')]");
 
         //Clear and send carrier value
         driver.findElement(By.id("txt_carrier_Arr")).clear();
@@ -143,23 +143,34 @@ public class GateArrivalDeparture extends Abstract {
         //Add spinner logic
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        WebElement Gatespiner = driver.findElement(By.xpath("//div[contains(@class, 'ewmsThrobber')]"));
-        wait.until(ExpectedConditions.invisibilityOf(Gatespiner));
+//        WebElement Gatespiner = driver.findElement(By.xpath("//div[contains(@class, 'ewmsThrobber')]"));
+//        wait.until(ExpectedConditions.invisibilityOf(Gatespiner));
+
+        AssistPage.waitOnThrobber(driver,"xpath","//div[contains(@class, 'ewmsThrobber')]");
 
 
 
         //Make this into a method withh try catch to catch image of failed.
-        --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        --|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        WebElement statusMsg = driver.findElement(By.id("reportWarningMsg"));
+        //--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        //--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        WebElement statusMsgxp = driver.findElement(By.id("reportWarningMsg"));
+        WebElement statusMsg = driver.findElement(By.xpath("//*[@id='msgDisplay']/span[4]/div"));
 //        WebElement statusMsg = driver.findElement(By.xpath("//span/div[contains(@class, 'successMsg ng-binding')]"));
-        if (!statusMsg.isDisplayed() && !statusMsg.getText().toLowerCase().contains(trailerNumber)) {
+        System.out.println("B IF 1 id: "+statusMsg);
+        System.out.println("B IF 1 xp: "+statusMsgxp);
+        if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(trailerNumber)) {
+            System.out.println("IF 1 id: "+statusMsg);
+            System.out.println("IF 1 xp: "+statusMsgxp);
             throw new RuntimeException("IF ONE - Failed to create bill to customer at the enterprise level");
         } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName)) {
 //            if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName))
+            System.out.println("IF 2 id: "+statusMsg);
+            System.out.println("IF 2 xp: "+statusMsgxp);
             throw new RuntimeException("IF TWO - Failed to create bill to customer at the enterprise level");
         } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName)) {
             //           if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName))
+            System.out.println("IF 3 id: "+statusMsg);
+            System.out.println("IF 3 xp: "+statusMsgxp);
             throw new RuntimeException("IF THREE - Failed to create bill to customer at the enterprise level");
         }
 
