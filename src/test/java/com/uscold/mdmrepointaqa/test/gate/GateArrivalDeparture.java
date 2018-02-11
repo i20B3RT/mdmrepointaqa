@@ -4,12 +4,15 @@ import com.uscold.mdmrepointaqa.test.Abstract;
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.uscold.mdmrepointaqa.test.utility.AssistPage.sendInput;
 
@@ -34,6 +37,8 @@ public class GateArrivalDeparture extends Abstract {
     final static String entNum = "Enterprise";
 
     //Validation and cache data
+    public String driverIDFromArrival = "";
+    public String trailerNumberFromArrival = "";
     int expectednumber = 1;
     private String offNumTotal = "";
     private String offNumOnsiteTotal = "";
@@ -107,7 +112,7 @@ public class GateArrivalDeparture extends Abstract {
 
 
         driver.findElement(By.id("txt_trailer")).sendKeys(Keys.TAB);
-        driver.findElement(By.id("txt_carrier_Arr")).sendKeys(Keys.TAB);
+        driver.findElement(By.id("txt_carrier_Arr")).sendKeys(Keys.ARROW_UP,Keys.TAB);
 
         click(driver.findElement(By.id("txt_trailer")));
 
@@ -136,6 +141,14 @@ public class GateArrivalDeparture extends Abstract {
 //        WebElement NewDriverIdUno = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("value");
 //        WebElement NewDriverIdDos = driver.findElement(By.id("txt_ConsigneeNumber")).getAttribute("text");
 //        WebElement NewDriverIdTres = driver.findElement(By.id("txt_ConsigneeNumber")).getText();
+
+        //Cache driverID and search him on the next test
+        driverIDFromArrival = driver.findElement(By.id("txt_driverID")).getAttribute("value");
+        System.out.println(driverIDFromArrival);
+
+        //Cache driverID and search him on the next test
+        trailerNumberFromArrival = driver.findElement(By.id("txt_trailer")).getAttribute("value");
+        System.out.println(trailerNumberFromArrival);
 
         //Click on arrive button
         click(driver.findElement(By.id("btn_submit")));
@@ -167,6 +180,11 @@ public class GateArrivalDeparture extends Abstract {
             System.out.println("IF 2 id: "+statusMsg);
             System.out.println("IF 2 xp: "+statusMsgxp);
             throw new RuntimeException("IF TWO - Failed to create bill to customer at the enterprise level");
+        } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName)) {
+//            if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverFirstName))
+            System.out.println("IF 2 id: "+statusMsg);
+            System.out.println("IF 2 xp: "+statusMsgxp);
+            throw new RuntimeException("IF TWO - Failed to create bill to customer at the enterprise level");
         } else if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName)) {
             //           if (!statusMsg.isDisplayed() && !statusMsg.getText().contains(driverLastName))
             System.out.println("IF 3 id: "+statusMsg);
@@ -177,4 +195,102 @@ public class GateArrivalDeparture extends Abstract {
 
     }
 
-}
+    @Test(priority = 2,dependsOnMethods = {"GateArrivalTest"},description = "TC: Validate driver on the Yard overlook page at warehouse")
+    public void YardOverlookTrailerSearch() throws InterruptedException {
+
+        extentTest = extent.startTest("TC: Validate driver on the Yard overlook page at warehouse" + WHSETEST + ".");
+
+//        //Fetch today's date and convert to a string plus_100.
+//        Calendar dateTwo = Calendar.getInstance();
+//        Date dateOne = dateTwo.getTime();
+//        DateFormat dateForm = new SimpleDateFormat("YYMMddhhmmss");
+//        String tDay = dateForm.format(dateOne);
+
+        AssistPage.chooseModule(driver, "Yard Overlook");
+        AssistPage.chooseWarehouse(driver, WHSE_NUM);
+
+        //Select Trailer # from dropdown
+//        click(AssistPage.chooseValueFromStandardDropDownByTextMatch(driver, "sel", "Trailer #"));
+//        chooseValueFromYOSearchDropDownBySubstring(driver,"sel","Trailer #");
+
+        //*[@id="sel"]/option[2]
+//        #sel > option:nth-child(2)
+
+        //Send trailer number from previous test to keyword field and enter key to search
+        sendInput(driver,"id","keyword",trailerNumberFromArrival+Keys.ENTER);
+
+        //Click on the search to find driver
+//        click(driver.findElement(By.id("search")));
+    }
+
+//    public static WebElement chooseValueFromYOSearchDropDownBySubstring(WebDriver driver, String id, String searchString) throws InterruptedException {
+//        //WebElement mySelectElm = driver.findElement(By.id(id));
+//       // Select mySelect= new Select(mySelectElm);
+//        //return mySelect.selectByVisibleText(substring);
+//        //List<WebElement> values = clickOnDropDownLabel(driver, id, substring);
+//        //return values.stream().filter(el -> el.getAttribute("innerText").trim().toLowerCase().contains(substring.toLowerCase())).findFirst().get();
+//
+//        WebElement mySelectElm = driver.findElement(By.id(id));
+//        Select mySelect= new Select(searchString);
+//        List<WebElement> options = mySelect.getOptions();
+//        for (WebElement option : options) {
+//            if (option.getText().equalsIgnoreCase("Option") {
+//                option.click();
+//            }
+//        }
+//    }
+
+//    @Test(priority = 2,description = "TC: Search drivers at the whse level")
+//    public void SearchWhseLevelTest()  {
+//
+//        AssistPage.chooseModule(driver, "Driver Maintenance");
+//        AssistPage.chooseWarehouse(driver, WHSE);
+//
+//        //Send driver value to the driver basic search box
+//        //driver.findElement(By.id("txt_accountType")).sendKeys(driverName);
+//
+//        sendInput(driver,"id", "txt_accountType",driverName);
+//
+//        //Click on the search button using xpath
+//        click(driver.findElement(By.xpath("//button[@id='btn_basicSearch']")));
+//
+//        //Wait on spinner is no longer displaying
+//        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.id("load_list"))));
+//
+//        //check if more than one record was returned, if less than 0, Assert will come back false
+//        int offNum = Integer.parseInt(driver.findElement(By.xpath("//span[@id='sp_1_pager']")).getText());
+//        offNumTotal = driver.findElement(By.xpath("//span[@id='sp_1_pager']")).getAttribute("value");
+//        Assert.assertTrue(offNum > expectednumber,"No driver records were returned whit the name: "+driverName);
+//
+//        firstRecordFoundOne = driver.findElement(By.xpath("//tr[2][@class='ui-widget-content jqgrow ui-row-ltr']/td[3]")).getText();
+//        System.out.print("[AssistPage] [INFO] this driver record was cached: "+firstRecordFoundOne+" for searching with driver number at the whse level"+ System.lineSeparator());
+//    }
+
+//    @Test(priority = 3,dependsOnMethods = {"GateArrivalTest"},description = "TC: Depart driver and trailer from previous test at warehouse "+WHSE)
+//    public void YardOverlookTrailerSearch() throws InterruptedException {
+//
+//        extentTest = extent.startTest("TC: Depart driver and trailer from previous test at warehouse " + WHSE + ".");
+//
+////        //Fetch today's date and convert to a string plus_100.
+////        Calendar dateTwo = Calendar.getInstance();
+////        Date dateOne = dateTwo.getTime();
+////        DateFormat dateForm = new SimpleDateFormat("YYMMddhhmmss");
+////        String tDay = dateForm.format(dateOne);
+//
+//        AssistPage.chooseModule(driver, "Gate Arrival Departure");
+//        AssistPage.chooseWarehouse(driver, WHSE_NUM);
+//
+//
+//        //Click on the arrival tile box using xpath
+////        click(driver.findElement(By.xpath("//div[@id='arrival']/div[contains(@class, 'boxAriDepImg')]/img[contains(@class, 'marginTop15')]/@src")));
+//        click(driver.findElement(By.xpath("//div[@id='departure']/div[contains(@class, 'boxAriDepImg')]")));
+//
+////        WebElement spiner = driver.findElement(By.xpath("//div[contains(@class, 'pageLoadingThrobber')]"));
+////        wait.until(ExpectedConditions.invisibilityOf(spiner));
+//
+//        AssistPage.waitOnThrobber(driver,"xpath","//div[contains(@class, 'pageLoadingThrobber')]");
+//
+//
+//        }
+
+    }

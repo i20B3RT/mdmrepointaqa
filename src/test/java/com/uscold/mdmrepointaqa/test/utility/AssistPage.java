@@ -19,6 +19,7 @@ public class AssistPage {
     private static final Logger LOGGER = Logger.getLogger(AssistPage.class);
     private static Set<Cookie> cookies = new HashSet<>();
     private final static int maxWaitTimeMillisToBeUsedInChooseFunctions = 7000;
+    protected WebDriverWait wait;
 
     public static void click(WebElement el, int maxWaitTimeMillis) {
         long startedAt = System.currentTimeMillis();
@@ -123,7 +124,6 @@ public class AssistPage {
         }
     }
 
-
     public static void sendInput(WebDriver driver, String elType, String idORxpath, String sendKeysVal) {
         long startedAtSend = System.currentTimeMillis();
         if (elType == "id") {
@@ -151,6 +151,43 @@ public class AssistPage {
 //        LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " to send this value : " + sendKeysVal + " to ====================-> xpath:" + byXp);
 //        return;
 //    }
+
+
+    public static void waitOnThrobber(WebDriver driver, String elType, String xpORid) {
+        long startedAtSend = System.currentTimeMillis();
+        WebDriverWait wait = new WebDriverWait(driver,15);
+
+        if (elType == "id") {
+            if (isElementPresen(driver, By.id(xpORid)))
+            {
+                WebElement spiner = driver.findElement(By.xpath(xpORid));
+                wait.until(ExpectedConditions.invisibilityOf(spiner));
+                LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " until the" +elType+" disappeared: " + " to ====================-> id:" + xpORid);
+                return;
+            }
+        } else if (elType == "xpath") {
+            if (AssistPage.isElementPresen(driver, By.xpath(xpORid)))
+            {
+                WebElement spinerTwo = driver.findElement(By.xpath(xpORid));
+                wait.until(ExpectedConditions.invisibilityOf(spinerTwo));
+                LOGGER.warn("was waiting for " + (System.currentTimeMillis() - startedAtSend) + " until the" +elType+" disappeared: " + " to ====================-> id:" + xpORid);
+                return;
+            }
+        }
+    }
+
+
+
+
+
+        public static boolean isElementPresen(WebDriver driver, By by) {
+            try {
+                driver.findElement(by);
+                return true;
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+        }
 
     public static boolean isElementPresent(WebDriver driver, By by) {
         try {
@@ -234,6 +271,8 @@ public class AssistPage {
 //        }
         return accTypeContainer.findElements(By.xpath("div[@class='chosen-drop']/ul/li"));
     }
+
+
 
 //    public date() {
 //    //Fetch today's date and convert to a string plus_100.

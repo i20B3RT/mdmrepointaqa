@@ -120,7 +120,7 @@ public abstract class Abstract extends BaseTestNGTest {
 
 
         extent.endTest(extentTest); //ending test and ends the current test and prepare to create html report
-        driver.quit();
+        //driver.quit();
     }
 
     @AfterTest(alwaysRun = true)
