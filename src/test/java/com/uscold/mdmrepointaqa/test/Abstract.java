@@ -1,19 +1,18 @@
 package com.uscold.mdmrepointaqa.test;
 
 import com.uscold.mdmrepointaqa.test.utility.AssistPage;
-import com.uscold.mdmrepointaqa.test.util.TestConstants;
-import com.uscold.mdmrepointaqa.test.util.WebDriverFactory;
+import com.uscold.mdmrepointaqa.test.utility.TestConstants;
+import com.uscold.mdmrepointaqa.test.utility.WebDriverFactory;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestContext;
 import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.uscold.mdmrepointaqa.test.util.TestConstants.GET_ELEMENT_TIMEOUT;
+import static com.uscold.mdmrepointaqa.test.utility.TestConstants.GET_ELEMENT_TIMEOUT;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -99,12 +98,19 @@ public abstract class Abstract extends BaseTestNGTest {
     public void tearDown(ITestResult result) throws IOException{
 
         if(result.getStatus()==ITestResult.FAILURE){
-            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getName()); //to add name in extent report
-            extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getThrowable()); //to add error/exception in extent report
+            try {
+                extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS " + result.getName()); //to add name in extent report
+                extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS " + result.getThrowable()); //to add error/exception in extent report
+            }catch (NullPointerException e) {
+                e.printStackTrace();
+                extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS " + result.getName()); //to add name in extent report
+                extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS " + result.getThrowable()); //to add error/exception in extent report
 
-            String screenshotPath = getScreenshot(driver, result.getName());
-            extentTest.log(LogStatus.FAIL, extentTest.addScreenCapture(screenshotPath)); //to add screenshot in extent report
-            //extentTest.log(LogStatus.FAIL, extentTest.addScreencast(screenshotPath)); //to add screencast/video in extent report
+
+                String screenshotPath = getScreenshot(driver, result.getName());
+                extentTest.log(LogStatus.FAIL, extentTest.addScreenCapture(screenshotPath)); //to add screenshot in extent report
+                //extentTest.log(LogStatus.FAIL, extentTest.addScreencast(screenshotPath)); //to add screencast/video in extent report
+            }
         }
         else if(result.getStatus()==ITestResult.SKIP){
             extentTest.log(LogStatus.SKIP, "Test Case SKIPPED IS " + result.getName());
